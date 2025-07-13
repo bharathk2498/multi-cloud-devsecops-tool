@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Infrastructure as Code Security{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-code fa-3x text-info me-3"></i>
+                <div>
+                    <h1 class="mb-1">Infrastructure as Code Security</h1>
+                    <p class="text-muted mb-0">Security best practices and templates for Terraform, CloudFormation, and ARM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter by Provider -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-filter me-2"></i>Filter by Cloud Provider
+                    </h5>
+                    <div class="btn-group flex-wrap" role="group">
+                        <button type="button" class="btn btn-outline-primary active" onclick="filterTemplates('all')">
+                            All Templates
+                        </button>
+                        {% for provider in providers %}
+                        <button type="button" class="btn btn-outline-primary" onclick="filterTemplates('{{ provider }}')">
+                            {% if provider == 'AWS' %}
+                            <i class="fab fa-aws me-1"></i>
+                            {% elif provider == 'Azure' %}
+                            <i class="fab fa-microsoft me-1"></i>
+                            {% elif provider == 'GCP' %}
+                            <i class="fab fa-google me-1"></i>
+                            {% endif %}
+                            {{ provider }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Templates Grid -->
+    <div class="row" id="templatesGrid">
+        {% for template in templates %}
+        <div class="col-lg-6 mb-4 template-card" data-provider="{{ template.cloud_provider }}">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        {% if template.cloud_provider == 'AWS' %}
+                        <i class="fab fa-aws text-warning me-2"></i>
+                        {% elif template.cloud_provider == 'Azure' %}
+                        <i class="fab fa-microsoft text-info me-2"></i>
+                        {% elif template.cloud_provider == 'GCP' %}
+                        <i class="fab fa-google text-success me-2"></i>
+                        {% endif %}
+                        {{ template.name }}
+                    </h5>
+                    <span class="badge bg-secondary">{{ template.category }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ template.description }}</p>
+                    
+                    <!-- Security Controls -->
+                    {% if template.security_controls %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-shield-alt me-2"></i>Security Controls
+                    </h6>
+                    <div class="mb-3">
+                        {% for control in template.security_controls %}
+                        <span class="badge bg-success me-1 mb-1">{{ control }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Template Content -->
+                    <h6 class="mt-3">
+                        <i class="fas fa-file-code me-2"></i>Template Code
+                    </h6>
+                    <pre class="bg-dark text-light p-3 rounded small" style="max-height: 300px; overflow-y: auto;"><code>{{ template.template_content }}</code></pre>
+
+                    <!-- Compliance Notes -->
+                    {% if template.compliance_notes %}
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-clipboard-check me-2"></i>Compliance Notes
+                        </h6>
+                        <p class="text-muted small">{{ template.compliance_notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="copyTemplate('{{ template.name }}')">
+                        <i class="fas fa-copy me-1"></i>Copy Code
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="downloadTemplate('{{ template.name }}')">
+                        <i class="fas fa-download me-1"></i>Download
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- IaC Security Best Practices -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>IaC Security Best Practices
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Development Phase</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Use secure-by-default templates</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Implement least privilege access</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Enable encryption at rest and in transit</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Use parameter validation and constraints</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Avoid hardcoding sensitive data</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-danger">Testing & Deployment</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Automated security scanning in CI/CD</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Policy-as-code enforcement</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Infrastructure drift detection</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Immutable infrastructure patterns</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Automated compliance validation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Tools for IaC -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tools me-2"></i>IaC Security Tools by Platform
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-warning">
+                                <i class="fab fa-aws me-2"></i>AWS Tools
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-cog text-warning me-2"></i>CloudFormation Guard</li>
+                                <li><i class="fas fa-eye text-warning me-2"></i>Config Rules</li>
+                                <li><i class="fas fa-shield text-warning me-2"></i>Security Hub</li>
+                                <li><i class="fas fa-search text-warning me-2"></i>Inspector</li>
+                                <li><i class="fas fa-lock text-warning me-2"></i>Systems Manager</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-info">
+                                <i class="fab fa-microsoft me-2"></i>Azure Tools
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-gavel text-info me-2"></i>Azure Policy</li>
+                                <li><i class="fas fa-chart-line text-info me-2"></i>Security Center</li>
+                                <li><i class="fas fa-shield text-info me-2"></i>Azure Defender</li>
+                                <li><i class="fas fa-code-branch text-info me-2"></i>DevOps Security</li>
+                                <li><i class="fas fa-blueprint text-info me-2"></i>Blueprints</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-success">
+                                <i class="fab fa-google me-2"></i>GCP Tools
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-gavel text-success me-2"></i>Organization Policy</li>
+                                <li><i class="fas fa-eye text-success me-2"></i>Security Command Center</li>
+                                <li><i class="fas fa-code-branch text-success me-2"></i>Binary Authorization</li>
+                                <li><i class="fas fa-search text-success me-2"></i>Container Analysis</li>
+                                <li><i class="fas fa-shield text-success me-2"></i>Policy Intelligence</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Third-Party Security Tools -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-puzzle-piece me-2"></i>Third-Party IaC Security Tools
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Static Analysis</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check-circle text-success me-1"></i>Checkov</li>
+                                <li><i class="fas fa-check-circle text-success me-1"></i>TFSec</li>
+                                <li><i class="fas fa-check-circle text-success me-1"></i>Terrascan</li>
+                                <li><i class="fas fa-check-circle text-success me-1"></i>KICS</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Policy as Code</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check-circle text-info me-1"></i>Open Policy Agent</li>
+                                <li><i class="fas fa-check-circle text-info me-1"></i>Sentinel</li>
+                                <li><i class="fas fa-check-circle text-info me-1"></i>Falco</li>
+                                <li><i class="fas fa-check-circle text-info me-1"></i>Gatekeeper</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Runtime Security</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check-circle text-warning me-1"></i>Prowler</li>
+                                <li><i class="fas fa-check-circle text-warning me-1"></i>ScoutSuite</li>
+                                <li><i class="fas fa-check-circle text-warning me-1"></i>CloudSploit</li>
+                                <li><i class="fas fa-check-circle text-warning me-1"></i>Pacu</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6>Compliance</h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check-circle text-danger me-1"></i>InSpec</li>
+                                <li><i class="fas fa-check-circle text-danger me-1"></i>CIS Benchmarks</li>
+                                <li><i class="fas fa-check-circle text-danger me-1"></i>Regula</li>
+                                <li><i class="fas fa-check-circle text-danger me-1"></i>Cloud Custodian</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterTemplates(provider) {
+    const cards = document.querySelectorAll('.template-card');
+    const buttons = document.querySelectorAll('.btn-group .btn');
+    
+    // Update button states
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter cards
+    cards.forEach(card => {
+        if (provider === 'all' || card.dataset.provider === provider) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function copyTemplate(templateName) {
+    // In a real implementation, this would copy the template code to clipboard
+    navigator.clipboard.writeText(`Template: ${templateName}`).then(() => {
+        alert(`Template code for "${templateName}" copied to clipboard!`);
+    }).catch(() => {
+        alert(`Template code for "${templateName}" ready for copying.`);
+    });
+}
+
+function downloadTemplate(templateName) {
+    alert(`Downloading template: ${templateName}\n\nThis would generate a downloadable file with:\n\n• Complete template code\n• Security configuration notes\n• Implementation guide\n• Compliance checklist\n• Best practices documentation`);
+}
+</script>
+{% endblock %}
