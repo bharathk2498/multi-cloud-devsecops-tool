@@ -1,0 +1,217 @@
+/* Custom styles for Multi-Cloud DevSecOps Reference Tool */
+/* Following Replit dark theme guidelines - minimal custom overrides */
+
+/* Code syntax highlighting */
+pre code {
+    color: var(--bs-light);
+    background-color: var(--bs-dark);
+}
+
+/* Enhanced card hover effects */
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cloud provider brand colors for badges */
+.badge.bg-aws {
+    background-color: #ff9900 !important;
+    color: #000 !important;
+}
+
+.badge.bg-azure {
+    background-color: #0078d4 !important;
+}
+
+.badge.bg-gcp {
+    background-color: #4285f4 !important;
+}
+
+/* Enhanced search modal */
+.modal-content {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Improved table responsiveness */
+.table-responsive {
+    border-radius: 0.375rem;
+}
+
+/* Better spacing for feature lists */
+.list-unstyled li {
+    padding: 0.25rem 0;
+}
+
+/* Enhanced button groups */
+.btn-group .btn {
+    margin-bottom: 0.5rem;
+}
+
+/* Improved navigation active states */
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Better contrast for text in cards */
+.card-text {
+    line-height: 1.6;
+}
+
+/* Enhanced alert styling */
+.alert {
+    border: none;
+    border-left: 4px solid var(--bs-primary);
+}
+
+.alert-info {
+    border-left-color: var(--bs-info);
+}
+
+.alert-success {
+    border-left-color: var(--bs-success);
+}
+
+.alert-warning {
+    border-left-color: var(--bs-warning);
+}
+
+.alert-danger {
+    border-left-color: var(--bs-danger);
+}
+
+/* Improved code blocks */
+pre {
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* Better mobile responsiveness */
+@media (max-width: 768px) {
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .btn-group .btn {
+        flex: 1 1 auto;
+        margin-bottom: 0.25rem;
+    }
+    
+    .card-header h5 {
+        font-size: 1rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+}
+
+/* Enhanced footer */
+footer {
+    margin-top: auto;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Better focus states for accessibility */
+.btn:focus,
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Enhanced dropdown menus */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* Better spacing for icon-text combinations */
+.fas + span,
+.fab + span {
+    margin-left: 0.5rem;
+}
+
+/* Enhanced search input */
+#searchInput {
+    border-radius: 1.5rem;
+    padding-left: 1rem;
+}
+
+/* Improved progress indicators */
+.progress {
+    height: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Better visual hierarchy */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+/* Enhanced quote styling */
+blockquote {
+    border-left: 4px solid var(--bs-primary);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+/* Improved table styling */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Better form styling */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Enhanced tooltip styling */
+.tooltip {
+    font-size: 0.875rem;
+}
+
+/* Improved accordion styling */
+.accordion-button:not(.collapsed) {
+    background-color: var(--bs-primary);
+    color: white;
+}
+
+/* Better tab styling */
+.nav-tabs .nav-link.active {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+
+/* Enhanced pagination */
+.page-link {
+    border-radius: 0.375rem;
+    margin: 0 0.125rem;
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
