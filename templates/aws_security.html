@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}AWS Security Services Reference{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fab fa-aws fa-3x text-warning me-3"></i>
+                <div>
+                    <h1 class="mb-1">AWS Security Services</h1>
+                    <p class="text-muted mb-0">Comprehensive reference for Amazon Web Services security tools and best practices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter and Categories -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-filter me-2"></i>Filter by Category
+                    </h5>
+                    <div class="btn-group flex-wrap" role="group">
+                        <button type="button" class="btn btn-outline-primary active" onclick="filterServices('all')">
+                            All Services
+                        </button>
+                        {% for category in categories %}
+                        <button type="button" class="btn btn-outline-primary" onclick="filterServices('{{ category }}')">
+                            {{ category }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="row" id="servicesGrid">
+        {% for service in services %}
+        <div class="col-lg-6 mb-4 service-card" data-category="{{ service.category }}">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt text-warning me-2"></i>
+                        {{ service.name }}
+                    </h5>
+                    <span class="badge bg-secondary">{{ service.category }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ service.description }}</p>
+                    
+                    <!-- Features -->
+                    {% if service.features %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-list me-2"></i>Key Features
+                    </h6>
+                    <ul class="list-unstyled">
+                        {% for feature in service.features %}
+                        <li><i class="fas fa-check text-success me-2"></i>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Best Practices -->
+                    {% if service.best_practices %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-star me-2"></i>Best Practices
+                    </h6>
+                    <ul class="list-unstyled">
+                        {% for practice in service.best_practices %}
+                        <li><i class="fas fa-arrow-right text-primary me-2"></i>{{ practice }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Implementation Guide -->
+                    {% if service.implementation_guide %}
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-cogs me-2"></i>Implementation Guide
+                        </h6>
+                        <p class="text-muted">{{ service.implementation_guide }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Cost Info -->
+                    {% if service.cost_info %}
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-dollar-sign me-2"></i>Cost Information
+                        </h6>
+                        <p class="text-info">{{ service.cost_info }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Compliance Frameworks -->
+                    {% if service.compliance_frameworks %}
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-clipboard-check me-2"></i>Compliance Support
+                        </h6>
+                        <div>
+                            {% for framework in service.compliance_frameworks %}
+                            <span class="badge bg-info me-1">{{ framework }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-outline-primary" onclick="exportServiceDetails('{{ service.name }}')">
+                        <i class="fas fa-download me-1"></i>Export Details
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Quick Reference Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>AWS Security Quick Reference
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Essential Security Services</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-user-shield text-warning me-2"></i>IAM (Identity & Access Management)</li>
+                                <li><i class="fas fa-eye text-warning me-2"></i>GuardDuty (Threat Detection)</li>
+                                <li><i class="fas fa-chart-line text-warning me-2"></i>Security Hub (Central Dashboard)</li>
+                                <li><i class="fas fa-history text-warning me-2"></i>CloudTrail (Audit Logging)</li>
+                                <li><i class="fas fa-cog text-warning me-2"></i>Config (Configuration Management)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Advanced Security Tools</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-search text-warning me-2"></i>Inspector (Vulnerability Assessment)</li>
+                                <li><i class="fas fa-database text-warning me-2"></i>Macie (Data Loss Prevention)</li>
+                                <li><i class="fas fa-shield text-warning me-2"></i>WAF (Web Application Firewall)</li>
+                                <li><i class="fas fa-lock text-warning me-2"></i>KMS (Key Management)</li>
+                                <li><i class="fas fa-certificate text-warning me-2"></i>Certificate Manager</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterServices(category) {
+    const cards = document.querySelectorAll('.service-card');
+    const buttons = document.querySelectorAll('.btn-group .btn');
+    
+    // Update button states
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter cards
+    cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function exportServiceDetails(serviceName) {
+    // Simple export functionality - in a real app, this would generate a downloadable file
+    alert(`Exporting details for: ${serviceName}\n\nThis would generate a downloadable PDF/JSON with complete service information including implementation guides, compliance mappings, and best practices.`);
+}
+</script>
+{% endblock %}
