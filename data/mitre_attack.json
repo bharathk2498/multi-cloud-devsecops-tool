@@ -1,0 +1,365 @@
+[
+  {
+    "tactic_id": "TA0001",
+    "name": "Initial Access",
+    "description": "Techniques used to gain an initial foothold within a network, including targeting internet-facing services and exploiting trust relationships",
+    "techniques": ["T1190", "T1133", "T1078", "T1566", "T1195", "T1199"],
+    "aws_mitigations": [
+      "AWS WAF for web application protection",
+      "GuardDuty for threat detection",
+      "VPC Security Groups with least privilege",
+      "AWS Shield for DDoS protection",
+      "CloudFront with AWS WAF integration",
+      "Multi-factor authentication for all users",
+      "Regular security assessments with Inspector"
+    ],
+    "azure_mitigations": [
+      "Application Gateway WAF",
+      "Azure Sentinel for threat detection",
+      "Network Security Groups with minimal access",
+      "Azure DDoS Protection",
+      "Azure Front Door with WAF policies",
+      "Conditional Access policies",
+      "Defender for Cloud security assessments"
+    ],
+    "gcp_mitigations": [
+      "Cloud Armor for DDoS and WAF protection",
+      "Security Command Center threat detection",
+      "VPC Firewall Rules with principle of least privilege",
+      "Cloud Load Balancing with security policies",
+      "Context-aware Access controls",
+      "Binary Authorization for container security",
+      "Web Security Scanner for vulnerability detection"
+    ]
+  },
+  {
+    "tactic_id": "TA0002",
+    "name": "Execution",
+    "description": "Techniques that result in adversary-controlled code running on a local or remote system",
+    "techniques": ["T1059", "T1609", "T1610", "T1611", "T1204"],
+    "aws_mitigations": [
+      "Lambda function execution role restrictions",
+      "ECS task role limitations",
+      "EC2 instance profiles with minimal permissions",
+      "Systems Manager Session Manager for secure access",
+      "CloudTrail logging for all API calls",
+      "Config Rules for compliance monitoring",
+      "GuardDuty for malicious activity detection"
+    ],
+    "azure_mitigations": [
+      "Azure Functions with managed identity",
+      "Container Instances with minimal permissions",
+      "VM managed identities",
+      "Azure Bastion for secure remote access",
+      "Activity Log monitoring",
+      "Azure Policy for governance",
+      "Defender for Cloud threat detection"
+    ],
+    "gcp_mitigations": [
+      "Cloud Functions with service account restrictions",
+      "Cloud Run with least privilege service accounts",
+      "Compute Engine with minimal service account permissions",
+      "Identity-Aware Proxy for secure access",
+      "Cloud Audit Logs for activity monitoring",
+      "Organization Policy constraints",
+      "Security Command Center for threat detection"
+    ]
+  },
+  {
+    "tactic_id": "TA0003",
+    "name": "Persistence",
+    "description": "Techniques used to maintain access to systems across restarts, changed credentials, and other interruptions",
+    "techniques": ["T1098", "T1136", "T1543", "T1547", "T1053"],
+    "aws_mitigations": [
+      "CloudTrail for user and role activity monitoring",
+      "Config for configuration change detection",
+      "IAM Access Analyzer for external access review",
+      "GuardDuty for unusual behavior detection",
+      "Organizations SCPs for account restrictions",
+      "Regular IAM credential rotation",
+      "CloudWatch Events for real-time monitoring"
+    ],
+    "azure_mitigations": [
+      "Azure AD Audit Logs for identity changes",
+      "Activity Log for resource modifications",
+      "Security Center for security posture monitoring",
+      "Privileged Identity Management for role assignments",
+      "Azure Monitor for automated alerting",
+      "Regular access reviews",
+      "Conditional Access policies"
+    ],
+    "gcp_mitigations": [
+      "Cloud Audit Logs for all administrative actions",
+      "Cloud Asset Inventory for resource tracking",
+      "IAM Recommender for access review",
+      "Security Command Center for security findings",
+      "Organization Policy for preventive controls",
+      "Regular IAM policy audits",
+      "Cloud Monitoring for alerting"
+    ]
+  },
+  {
+    "tactic_id": "TA0004",
+    "name": "Privilege Escalation",
+    "description": "Techniques used to gain higher-level permissions on a system or network",
+    "techniques": ["T1548", "T1068", "T1134", "T1078"],
+    "aws_mitigations": [
+      "IAM least privilege principle enforcement",
+      "Regular permission boundary implementation",
+      "CloudTrail for privilege use monitoring",
+      "GuardDuty for privilege escalation detection",
+      "Config Rules for IAM policy compliance",
+      "Access Analyzer for unused permissions",
+      "Regular IAM policy reviews"
+    ],
+    "azure_mitigations": [
+      "Azure AD Privileged Identity Management",
+      "Just-in-time access controls",
+      "Conditional Access for privileged accounts",
+      "Identity Protection for risk detection",
+      "Regular access reviews",
+      "Azure Policy for compliance",
+      "Security Center recommendations"
+    ],
+    "gcp_mitigations": [
+      "IAM Conditions for fine-grained access control",
+      "Context-aware Access for risk-based decisions",
+      "IAM Recommender for permission optimization",
+      "Organization Policy for preventive controls",
+      "Security Command Center for findings",
+      "Regular IAM audits",
+      "VPC Service Controls for data perimeter"
+    ]
+  },
+  {
+    "tactic_id": "TA0005",
+    "name": "Defense Evasion",
+    "description": "Techniques used to avoid detection throughout their compromise",
+    "techniques": ["T1562", "T1070", "T1036", "T1055", "T1027"],
+    "aws_mitigations": [
+      "CloudTrail with log file integrity validation",
+      "Config for configuration compliance monitoring",
+      "GuardDuty for behavior analysis",
+      "VPC Flow Logs for network monitoring",
+      "S3 bucket access logging",
+      "Lambda function monitoring",
+      "CloudWatch centralized logging"
+    ],
+    "azure_mitigations": [
+      "Azure Monitor with immutable logs",
+      "Activity Log with retention policies",
+      "Network Security Group flow logs",
+      "Azure Sentinel for behavior analytics",
+      "Storage account logging",
+      "Function app monitoring",
+      "Log Analytics workspace"
+    ],
+    "gcp_mitigations": [
+      "Cloud Audit Logs with retention policies",
+      "VPC Flow Logs for network visibility",
+      "Security Command Center for threat detection",
+      "Cloud Storage access logs",
+      "Cloud Functions monitoring",
+      "Cloud Logging with log sinks",
+      "Chronicle for security analytics"
+    ]
+  },
+  {
+    "tactic_id": "TA0006",
+    "name": "Credential Access",
+    "description": "Techniques for stealing credentials like account names and passwords",
+    "techniques": ["T1110", "T1555", "T1212", "T1552"],
+    "aws_mitigations": [
+      "IAM credential rotation policies",
+      "Secrets Manager for credential storage",
+      "GuardDuty for credential compromise detection",
+      "Multi-factor authentication enforcement",
+      "CloudTrail for authentication monitoring",
+      "Systems Manager Parameter Store encryption",
+      "Regular credential audits"
+    ],
+    "azure_mitigations": [
+      "Azure AD password protection",
+      "Key Vault for secrets management",
+      "Identity Protection for risk detection",
+      "Multi-factor authentication policies",
+      "Sign-in logs monitoring",
+      "Conditional Access for sensitive operations",
+      "Regular credential reviews"
+    ],
+    "gcp_mitigations": [
+      "Secret Manager for credential storage",
+      "Security Command Center for suspicious activity",
+      "Cloud IAM service account key rotation",
+      "Context-aware Access for authentication",
+      "Cloud Audit Logs for access monitoring",
+      "Binary Authorization for image verification",
+      "Regular service account audits"
+    ]
+  },
+  {
+    "tactic_id": "TA0007",
+    "name": "Discovery",
+    "description": "Techniques used to gain knowledge about the system and internal network",
+    "techniques": ["T1087", "T1083", "T1135", "T1046", "T1057"],
+    "aws_mitigations": [
+      "VPC Flow Logs for network reconnaissance detection",
+      "GuardDuty for reconnaissance behavior analysis",
+      "CloudTrail for API enumeration monitoring",
+      "Config for resource inventory protection",
+      "Security Groups for network segmentation",
+      "IAM for service enumeration restrictions",
+      "CloudWatch for unusual activity patterns"
+    ],
+    "azure_mitigations": [
+      "Network Security Group flow logs",
+      "Azure Sentinel for reconnaissance detection",
+      "Activity Log for resource enumeration",
+      "Network Watcher for traffic analysis",
+      "Azure AD for identity enumeration protection",
+      "Resource Graph query monitoring",
+      "Azure Monitor for pattern analysis"
+    ],
+    "gcp_mitigations": [
+      "VPC Flow Logs for network scanning detection",
+      "Security Command Center for reconnaissance alerts",
+      "Cloud Audit Logs for API enumeration",
+      "Cloud Asset Inventory access controls",
+      "VPC Firewall for network segmentation",
+      "Cloud IAM for service discovery restrictions",
+      "Cloud Monitoring for anomaly detection"
+    ]
+  },
+  {
+    "tactic_id": "TA0008",
+    "name": "Lateral Movement",
+    "description": "Techniques used to enter and control remote systems on a network",
+    "techniques": ["T1021", "T1080", "T1550", "T1563"],
+    "aws_mitigations": [
+      "VPC network segmentation and micro-segmentation",
+      "Security Groups with least privilege network access",
+      "Systems Manager Session Manager for controlled access",
+      "GuardDuty for lateral movement detection",
+      "VPC Flow Logs for traffic analysis",
+      "Network ACLs for subnet-level controls",
+      "PrivateLink for service isolation"
+    ],
+    "azure_mitigations": [
+      "Virtual Network segmentation with subnets",
+      "Network Security Groups for traffic filtering",
+      "Azure Bastion for secure remote access",
+      "Azure Sentinel for lateral movement detection",
+      "Network Security Group flow logs",
+      "Application Security Groups for workload isolation",
+      "Private Endpoints for service isolation"
+    ],
+    "gcp_mitigations": [
+      "VPC network segmentation with subnets",
+      "VPC Firewall Rules for traffic control",
+      "Identity-Aware Proxy for zero-trust access",
+      "Security Command Center for movement detection",
+      "VPC Flow Logs for network monitoring",
+      "Private Google Access for service isolation",
+      "Cloud Interconnect for secure connectivity"
+    ]
+  },
+  {
+    "tactic_id": "TA0009",
+    "name": "Collection",
+    "description": "Techniques used to identify and gather information prior to exfiltration",
+    "techniques": ["T1005", "T1039", "T1025", "T1074"],
+    "aws_mitigations": [
+      "Macie for sensitive data discovery and protection",
+      "S3 bucket policies and access controls",
+      "CloudTrail for data access monitoring",
+      "GuardDuty for unusual data access patterns",
+      "VPC Flow Logs for data transfer monitoring",
+      "KMS for data encryption at rest",
+      "Data Loss Prevention controls"
+    ],
+    "azure_mitigations": [
+      "Azure Information Protection for data classification",
+      "Storage account access controls and monitoring",
+      "Activity Log for data access tracking",
+      "Azure Sentinel for data collection detection",
+      "Network Security Group monitoring",
+      "Azure Storage encryption",
+      "Data Loss Prevention policies"
+    ],
+    "gcp_mitigations": [
+      "Cloud Data Loss Prevention for sensitive data protection",
+      "Cloud Storage access controls and logging",
+      "Cloud Audit Logs for data access monitoring",
+      "Security Command Center for collection detection",
+      "VPC Flow Logs for data transfer analysis",
+      "Cloud KMS for encryption",
+      "Data Catalog for data governance"
+    ]
+  },
+  {
+    "tactic_id": "TA0010",
+    "name": "Exfiltration",
+    "description": "Techniques used to steal data from the network",
+    "techniques": ["T1041", "T1567", "T1048"],
+    "aws_mitigations": [
+      "VPC Flow Logs for egress traffic monitoring",
+      "GuardDuty for data exfiltration detection",
+      "S3 bucket logging and access controls",
+      "CloudTrail for data access auditing",
+      "NAT Gateway logging for internet traffic",
+      "Data Loss Prevention tools",
+      "Network monitoring and alerting"
+    ],
+    "azure_mitigations": [
+      "Network Security Group flow logs for egress monitoring",
+      "Azure Sentinel for exfiltration detection",
+      "Storage account logging and controls",
+      "Activity Log for data movement tracking",
+      "Network Watcher for traffic analysis",
+      "Information Protection for data classification",
+      "Azure Monitor for automated alerting"
+    ],
+    "gcp_mitigations": [
+      "VPC Flow Logs for egress traffic analysis",
+      "Security Command Center for exfiltration alerts",
+      "Cloud Storage access logging",
+      "Cloud Audit Logs for data access tracking",
+      "Cloud NAT logging for internet traffic",
+      "Cloud DLP for data protection",
+      "Cloud Monitoring for anomaly detection"
+    ]
+  },
+  {
+    "tactic_id": "TA0011",
+    "name": "Impact",
+    "description": "Techniques used to disrupt availability or compromise integrity",
+    "techniques": ["T1485", "T1486", "T1490", "T1498"],
+    "aws_mitigations": [
+      "AWS Backup for data protection and recovery",
+      "S3 Cross-Region Replication for data resilience",
+      "CloudFormation for infrastructure recovery",
+      "Auto Scaling for availability protection",
+      "Route 53 health checks for service continuity",
+      "KMS for data integrity protection",
+      "Incident response automation"
+    ],
+    "azure_mitigations": [
+      "Azure Backup for data protection",
+      "Azure Site Recovery for disaster recovery",
+      "Resource Manager templates for recovery",
+      "Auto Scaling for service availability",
+      "Traffic Manager for failover",
+      "Key Vault for data protection",
+      "Automation for incident response"
+    ],
+    "gcp_mitigations": [
+      "Cloud Storage versioning and lifecycle management",
+      "Persistent Disk snapshots for recovery",
+      "Deployment Manager for infrastructure restoration",
+      "Managed Instance Groups for availability",
+      "Cloud Load Balancing for failover",
+      "Cloud KMS for data integrity",
+      "Cloud Functions for automated response"
+    ]
+  }
+]
