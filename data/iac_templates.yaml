@@ -1,0 +1,1366 @@
+- name: "AWS VPC with Security Groups"
+  cloud_provider: "AWS"
+  category: "Network Security"
+  description: "Secure VPC configuration with properly configured security groups following AWS security best practices"
+  template_content: |
+    # AWS CloudFormation Template - Secure VPC with Security Groups
+    AWSTemplateFormatVersion: '2010-09-09'
+    Description: 'Secure VPC configuration with security groups following AWS best practices'
+    
+    Parameters:
+      Environment:
+        Type: String
+        Default: production
+        AllowedValues: [development, staging, production]
+        Description: Environment name for resource tagging
+    
+    Resources:
+      # VPC Configuration
+      SecureVPC:
+        Type: AWS::EC2::VPC
+        Properties:
+          CidrBlock: 10.0.0.0/16
+          EnableDnsHostnames: true
+          EnableDnsSupport: true
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-secure-vpc'
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # Internet Gateway
+      InternetGateway:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-igw'
+    
+      AttachGateway:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+          VpcId: !Ref SecureVPC
+          InternetGatewayId: !Ref InternetGateway
+    
+      # Public Subnet
+      PublicSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref SecureVPC
+          CidrBlock: 10.0.1.0/24
+          AvailabilityZone: !Select [0, !GetAZs '']
+          MapPublicIpOnLaunch: false
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-public-subnet'
+    
+      # Private Subnet
+      PrivateSubnet:
+        Type: AWS::EC2::Subnet
+        Properties:
+          VpcId: !Ref SecureVPC
+          CidrBlock: 10.0.2.0/24
+          AvailabilityZone: !Select [1, !GetAZs '']
+          MapPublicIpOnLaunch: false
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-private-subnet'
+    
+      # Security Group for Web Servers
+      WebServerSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+          GroupDescription: Security group for web servers - HTTPS only
+          VpcId: !Ref SecureVPC
+          SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: 443
+              ToPort: 443
+              CidrIp: 0.0.0.0/0
+              Description: HTTPS traffic from internet
+            - IpProtocol: tcp
+              FromPort: 80
+              ToPort: 80
+              CidrIp: 0.0.0.0/0
+              Description: HTTP traffic (redirect to HTTPS)
+          SecurityGroupEgress:
+            - IpProtocol: tcp
+              FromPort: 443
+              ToPort: 443
+              CidrIp: 0.0.0.0/0
+              Description: HTTPS outbound for updates
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-web-sg'
+    
+      # Security Group for Database
+      DatabaseSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+          GroupDescription: Security group for database servers
+          VpcId: !Ref SecureVPC
+          SecurityGroupIngress:
+            - IpProtocol: tcp
+              FromPort: 3306
+              ToPort: 3306
+              SourceSecurityGroupId: !Ref WebServerSecurityGroup
+              Description: MySQL access from web servers only
+          Tags:
+            - Key: Name
+              Value: !Sub '${Environment}-db-sg'
+    
+    Outputs:
+      VPCId:
+        Description: VPC ID
+        Value: !Ref SecureVPC
+        Export:
+          Name: !Sub '${Environment}-VPC-ID'
+      
+      WebSecurityGroupId:
+        Description: Web Server Security Group ID
+        Value: !Ref WebServerSecurityGroup
+        Export:
+          Name: !Sub '${Environment}-WebSG-ID'
+  security_controls:
+    - "Network Segmentation"
+    - "Least Privilege Access"
+    - "Traffic Encryption (HTTPS only)"
+    - "Database Access Control"
+    - "No SSH Access from Internet"
+  compliance_notes: "Follows AWS Security Best Practices, CIS Controls, and PCI DSS network security requirements"
+
+- name: "Azure Network Security Groups"
+  cloud_provider: "Azure"
+  category: "Network Security"
+  description: "Azure NSG configuration with security best practices including default deny and explicit allow rules"
+  template_content: |
+    # Azure Resource Manager Template - Network Security Groups
+    {
+      "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "environment": {
+          "type": "string",
+          "defaultValue": "production",
+          "allowedValues": ["development", "staging", "production"],
+          "metadata": {
+            "description": "Environment name for resource tagging"
+          }
+        },
+        "location": {
+          "type": "string",
+          "defaultValue": "[resourceGroup().location]",
+          "metadata": {
+            "description": "Location for all resources"
+          }
+        }
+      },
+      "variables": {
+        "nsgName": "[concat(parameters('environment'), '-secure-nsg')]"
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Network/networkSecurityGroups",
+          "apiVersion": "2021-02-01",
+          "name": "[variables('nsgName')]",
+          "location": "[parameters('location')]",
+          "tags": {
+            "Environment": "[parameters('environment')]",
+            "Purpose": "Security"
+          },
+          "properties": {
+            "securityRules": [
+              {
+                "name": "AllowHTTPSInbound",
+                "properties": {
+                  "description": "Allow HTTPS traffic inbound",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "443",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 1000,
+                  "direction": "Inbound"
+                }
+              },
+              {
+                "name": "AllowHTTPInbound",
+                "properties": {
+                  "description": "Allow HTTP traffic inbound (for redirect to HTTPS)",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "80",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 1100,
+                  "direction": "Inbound"
+                }
+              },
+              {
+                "name": "AllowSSHFromBastion",
+                "properties": {
+                  "description": "Allow SSH from bastion subnet only",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "22",
+                  "sourceAddressPrefix": "10.0.1.0/24",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 1200,
+                  "direction": "Inbound"
+                }
+              },
+              {
+                "name": "DenyAllInbound",
+                "properties": {
+                  "description": "Deny all other inbound traffic",
+                  "protocol": "*",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "*",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Deny",
+                  "priority": 4096,
+                  "direction": "Inbound"
+                }
+              },
+              {
+                "name": "AllowHTTPSOutbound",
+                "properties": {
+                  "description": "Allow HTTPS outbound for updates",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "443",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 1000,
+                  "direction": "Outbound"
+                }
+              },
+              {
+                "name": "AllowDNSOutbound",
+                "properties": {
+                  "description": "Allow DNS resolution",
+                  "protocol": "Udp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "53",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "*",
+                  "access": "Allow",
+                  "priority": 1100,
+                  "direction": "Outbound"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "outputs": {
+        "nsgId": {
+          "type": "string",
+          "value": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
+      }
+    }
+  security_controls:
+    - "Default Deny Policy"
+    - "Explicit Allow Rules"
+    - "Priority-based Rule Ordering"
+    - "Bastion Host Access Control"
+    - "Outbound Traffic Filtering"
+  compliance_notes: "Aligns with Azure Security Baseline, CIS Controls, and NIST Cybersecurity Framework"
+
+- name: "GCP VPC Firewall Rules"
+  cloud_provider: "GCP"
+  category: "Network Security"
+  description: "Google Cloud VPC firewall rules with security best practices including least privilege and network segmentation"
+  template_content: |
+    # Terraform Configuration - GCP VPC Firewall Rules
+    terraform {
+      required_version = ">= 1.0"
+      required_providers {
+        google = {
+          source  = "hashicorp/google"
+          version = "~> 4.0"
+        }
+      }
+    }
+    
+    variable "project_id" {
+      description = "The GCP project ID"
+      type        = string
+    }
+    
+    variable "environment" {
+      description = "Environment name"
+      type        = string
+      default     = "production"
+      validation {
+        condition     = contains(["development", "staging", "production"], var.environment)
+        error_message = "Environment must be development, staging, or production."
+      }
+    }
+    
+    variable "region" {
+      description = "The GCP region"
+      type        = string
+      default     = "us-central1"
+    }
+    
+    # VPC Network
+    resource "google_compute_network" "secure_vpc" {
+      name                    = "${var.environment}-secure-vpc"
+      auto_create_subnetworks = false
+      project                 = var.project_id
+    }
+    
+    # Subnet for web tier
+    resource "google_compute_subnetwork" "web_subnet" {
+      name          = "${var.environment}-web-subnet"
+      ip_cidr_range = "10.0.1.0/24"
+      region        = var.region
+      network       = google_compute_network.secure_vpc.id
+      project       = var.project_id
+      
+      log_config {
+        aggregation_interval = "INTERVAL_10_MIN"
+        flow_sampling        = 0.5
+        metadata            = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Subnet for database tier
+    resource "google_compute_subnetwork" "db_subnet" {
+      name          = "${var.environment}-db-subnet"
+      ip_cidr_range = "10.0.2.0/24"
+      region        = var.region
+      network       = google_compute_network.secure_vpc.id
+      project       = var.project_id
+      
+      log_config {
+        aggregation_interval = "INTERVAL_10_MIN"
+        flow_sampling        = 0.5
+        metadata            = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Firewall rule: Allow HTTPS from internet to web tier
+    resource "google_compute_firewall" "allow_https" {
+      name    = "${var.environment}-allow-https"
+      network = google_compute_network.secure_vpc.name
+      project = var.project_id
+    
+      allow {
+        protocol = "tcp"
+        ports    = ["443"]
+      }
+    
+      source_ranges = ["0.0.0.0/0"]
+      target_tags   = ["web-server"]
+      
+      log_config {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Firewall rule: Allow HTTP from internet (for redirect to HTTPS)
+    resource "google_compute_firewall" "allow_http_redirect" {
+      name    = "${var.environment}-allow-http-redirect"
+      network = google_compute_network.secure_vpc.name
+      project = var.project_id
+    
+      allow {
+        protocol = "tcp"
+        ports    = ["80"]
+      }
+    
+      source_ranges = ["0.0.0.0/0"]
+      target_tags   = ["web-server"]
+      
+      log_config {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Firewall rule: Allow database access from web tier only
+    resource "google_compute_firewall" "allow_db_from_web" {
+      name    = "${var.environment}-allow-db-from-web"
+      network = google_compute_network.secure_vpc.name
+      project = var.project_id
+    
+      allow {
+        protocol = "tcp"
+        ports    = ["3306", "5432"]
+      }
+    
+      source_tags = ["web-server"]
+      target_tags = ["database"]
+      
+      log_config {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Firewall rule: Allow SSH from IAP only
+    resource "google_compute_firewall" "allow_ssh_iap" {
+      name    = "${var.environment}-allow-ssh-iap"
+      network = google_compute_network.secure_vpc.name
+      project = var.project_id
+    
+      allow {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    
+      # IAP IP range
+      source_ranges = ["35.235.240.0/20"]
+      target_tags   = ["allow-ssh"]
+      
+      log_config {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Firewall rule: Deny all other traffic (implicit deny)
+    resource "google_compute_firewall" "deny_all" {
+      name     = "${var.environment}-deny-all"
+      network  = google_compute_network.secure_vpc.name
+      project  = var.project_id
+      priority = 65534
+    
+      deny {
+        protocol = "all"
+      }
+    
+      source_ranges = ["0.0.0.0/0"]
+      
+      log_config {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+    
+    # Output values
+    output "vpc_id" {
+      description = "The ID of the VPC"
+      value       = google_compute_network.secure_vpc.id
+    }
+    
+    output "web_subnet_id" {
+      description = "The ID of the web subnet"
+      value       = google_compute_subnetwork.web_subnet.id
+    }
+    
+    output "db_subnet_id" {
+      description = "The ID of the database subnet"
+      value       = google_compute_subnetwork.db_subnet.id
+    }
+  security_controls:
+    - "Network Segmentation"
+    - "Least Privilege Access"
+    - "Identity-Aware Proxy (IAP) Integration"
+    - "VPC Flow Logs Enabled"
+    - "Firewall Logging"
+    - "Tag-based Access Control"
+  compliance_notes: "Follows Google Cloud Security Best Practices, CIS Controls, and Zero Trust architecture principles"
+
+- name: "AWS S3 Bucket Security"
+  cloud_provider: "AWS"
+  category: "Data Protection"
+  description: "Secure S3 bucket configuration with encryption, access controls, and monitoring"
+  template_content: |
+    # AWS CloudFormation Template - Secure S3 Bucket
+    AWSTemplateFormatVersion: '2010-09-09'
+    Description: 'Secure S3 bucket with encryption, access controls, and monitoring'
+    
+    Parameters:
+      BucketName:
+        Type: String
+        Description: Name of the S3 bucket (must be globally unique)
+      Environment:
+        Type: String
+        Default: production
+        AllowedValues: [development, staging, production]
+        Description: Environment name
+    
+    Resources:
+      # KMS Key for S3 Encryption
+      S3EncryptionKey:
+        Type: AWS::KMS::Key
+        Properties:
+          Description: !Sub 'KMS key for ${BucketName} S3 bucket encryption'
+          KeyPolicy:
+            Statement:
+              - Sid: Enable IAM User Permissions
+                Effect: Allow
+                Principal:
+                  AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+                Action: 'kms:*'
+                Resource: '*'
+              - Sid: Allow S3 Service
+                Effect: Allow
+                Principal:
+                  Service: s3.amazonaws.com
+                Action:
+                  - kms:Decrypt
+                  - kms:GenerateDataKey
+                Resource: '*'
+          Tags:
+            - Key: Name
+              Value: !Sub '${BucketName}-encryption-key'
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # KMS Key Alias
+      S3EncryptionKeyAlias:
+        Type: AWS::KMS::Alias
+        Properties:
+          AliasName: !Sub 'alias/${BucketName}-encryption-key'
+          TargetKeyId: !Ref S3EncryptionKey
+    
+      # S3 Bucket
+      SecureS3Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: !Ref BucketName
+          AccessControl: Private
+          PublicAccessBlockConfiguration:
+            BlockPublicAcls: true
+            BlockPublicPolicy: true
+            IgnorePublicAcls: true
+            RestrictPublicBuckets: true
+          BucketEncryption:
+            ServerSideEncryptionConfiguration:
+              - ServerSideEncryptionByDefault:
+                  SSEAlgorithm: aws:kms
+                  KMSMasterKeyID: !Ref S3EncryptionKey
+                BucketKeyEnabled: true
+          VersioningConfiguration:
+            Status: Enabled
+          LoggingConfiguration:
+            DestinationBucketName: !Ref S3AccessLogsBucket
+            LogFilePrefix: access-logs/
+          NotificationConfiguration:
+            CloudWatchConfigurations:
+              - Event: s3:ObjectCreated:*
+                CloudWatchConfiguration:
+                  LogGroupName: !Ref S3LogGroup
+          LifecycleConfiguration:
+            Rules:
+              - Id: TransitionToIA
+                Status: Enabled
+                Transitions:
+                  - TransitionInDays: 30
+                    StorageClass: STANDARD_IA
+                  - TransitionInDays: 90
+                    StorageClass: GLACIER
+                  - TransitionInDays: 365
+                    StorageClass: DEEP_ARCHIVE
+              - Id: DeleteIncompleteMultipartUploads
+                Status: Enabled
+                AbortIncompleteMultipartUpload:
+                  DaysAfterInitiation: 7
+          Tags:
+            - Key: Name
+              Value: !Ref BucketName
+            - Key: Environment
+              Value: !Ref Environment
+            - Key: Security
+              Value: High
+    
+      # S3 Bucket for Access Logs
+      S3AccessLogsBucket:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: !Sub '${BucketName}-access-logs'
+          AccessControl: LogDeliveryWrite
+          PublicAccessBlockConfiguration:
+            BlockPublicAcls: true
+            BlockPublicPolicy: true
+            IgnorePublicAcls: true
+            RestrictPublicBuckets: true
+          BucketEncryption:
+            ServerSideEncryptionConfiguration:
+              - ServerSideEncryptionByDefault:
+                  SSEAlgorithm: AES256
+          LifecycleConfiguration:
+            Rules:
+              - Id: DeleteOldLogs
+                Status: Enabled
+                ExpirationInDays: 90
+    
+      # CloudWatch Log Group
+      S3LogGroup:
+        Type: AWS::Logs::LogGroup
+        Properties:
+          LogGroupName: !Sub '/aws/s3/${BucketName}'
+          RetentionInDays: 90
+    
+      # S3 Bucket Policy
+      S3BucketPolicy:
+        Type: AWS::S3::BucketPolicy
+        Properties:
+          Bucket: !Ref SecureS3Bucket
+          PolicyDocument:
+            Statement:
+              - Sid: DenyInsecureConnections
+                Effect: Deny
+                Principal: '*'
+                Action: 's3:*'
+                Resource:
+                  - !Sub '${SecureS3Bucket}/*'
+                  - !Ref SecureS3Bucket
+                Condition:
+                  Bool:
+                    'aws:SecureTransport': 'false'
+              - Sid: DenyUnencryptedObjectUploads
+                Effect: Deny
+                Principal: '*'
+                Action: 's3:PutObject'
+                Resource: !Sub '${SecureS3Bucket}/*'
+                Condition:
+                  StringNotEquals:
+                    's3:x-amz-server-side-encryption': 'aws:kms'
+    
+    Outputs:
+      BucketName:
+        Description: Name of the secure S3 bucket
+        Value: !Ref SecureS3Bucket
+        Export:
+          Name: !Sub '${Environment}-SecureS3Bucket'
+      
+      KMSKeyId:
+        Description: KMS Key ID for bucket encryption
+        Value: !Ref S3EncryptionKey
+        Export:
+          Name: !Sub '${Environment}-S3EncryptionKey'
+  security_controls:
+    - "Server-Side Encryption with KMS"
+    - "Public Access Blocked"
+    - "Versioning Enabled"
+    - "Access Logging"
+    - "Secure Transport Required"
+    - "Lifecycle Management"
+    - "Unencrypted Upload Prevention"
+  compliance_notes: "Meets HIPAA, GDPR, and SOC 2 requirements for data protection and encryption"
+
+- name: "Azure Key Vault Configuration"
+  cloud_provider: "Azure"
+  category: "Key Management"
+  description: "Secure Azure Key Vault configuration with access policies and monitoring"
+  template_content: |
+    # Terraform Configuration - Azure Key Vault
+    terraform {
+      required_version = ">= 1.0"
+      required_providers {
+        azurerm = {
+          source  = "hashicorp/azurerm"
+          version = "~> 3.0"
+        }
+      }
+    }
+    
+    provider "azurerm" {
+      features {
+        key_vault {
+          purge_soft_delete_on_destroy    = true
+          recover_soft_deleted_key_vaults = true
+        }
+      }
+    }
+    
+    variable "environment" {
+      description = "Environment name"
+      type        = string
+      default     = "production"
+      validation {
+        condition     = contains(["development", "staging", "production"], var.environment)
+        error_message = "Environment must be development, staging, or production."
+      }
+    }
+    
+    variable "location" {
+      description = "Azure region"
+      type        = string
+      default     = "East US"
+    }
+    
+    variable "tenant_id" {
+      description = "Azure AD tenant ID"
+      type        = string
+    }
+    
+    data "azurerm_client_config" "current" {}
+    
+    # Resource Group
+    resource "azurerm_resource_group" "kv_rg" {
+      name     = "${var.environment}-keyvault-rg"
+      location = var.location
+      
+      tags = {
+        Environment = var.environment
+        Purpose     = "Security"
+      }
+    }
+    
+    # Log Analytics Workspace
+    resource "azurerm_log_analytics_workspace" "kv_logs" {
+      name                = "${var.environment}-kv-logs"
+      location            = azurerm_resource_group.kv_rg.location
+      resource_group_name = azurerm_resource_group.kv_rg.name
+      sku                 = "PerGB2018"
+      retention_in_days   = 90
+      
+      tags = {
+        Environment = var.environment
+        Purpose     = "Monitoring"
+      }
+    }
+    
+    # Key Vault
+    resource "azurerm_key_vault" "secure_kv" {
+      name                       = "${var.environment}-secure-kv-${random_id.kv_suffix.hex}"
+      location                   = azurerm_resource_group.kv_rg.location
+      resource_group_name        = azurerm_resource_group.kv_rg.name
+      tenant_id                  = var.tenant_id
+      sku_name                   = "premium"
+      soft_delete_retention_days = 90
+      purge_protection_enabled   = true
+      
+      enable_rbac_authorization = true
+      
+      network_acls {
+        default_action = "Deny"
+        bypass         = "AzureServices"
+        ip_rules       = []
+        virtual_network_subnet_ids = []
+      }
+      
+      tags = {
+        Environment = var.environment
+        Purpose     = "Security"
+      }
+    }
+    
+    # Random ID for Key Vault naming
+    resource "random_id" "kv_suffix" {
+      byte_length = 4
+    }
+    
+    # Diagnostic Settings for Key Vault
+    resource "azurerm_monitor_diagnostic_setting" "kv_diagnostics" {
+      name               = "${var.environment}-kv-diagnostics"
+      target_resource_id = azurerm_key_vault.secure_kv.id
+      log_analytics_workspace_id = azurerm_log_analytics_workspace.kv_logs.id
+      
+      enabled_log {
+        category = "AuditEvent"
+        
+        retention_policy {
+          enabled = true
+          days    = 90
+        }
+      }
+      
+      enabled_log {
+        category = "AzurePolicyEvaluationDetails"
+        
+        retention_policy {
+          enabled = true
+          days    = 90
+        }
+      }
+      
+      metric {
+        category = "AllMetrics"
+        
+        retention_policy {
+          enabled = true
+          days    = 90
+        }
+      }
+    }
+    
+    # Key Vault Access Policy for Current User/Service Principal
+    resource "azurerm_key_vault_access_policy" "admin_policy" {
+      key_vault_id = azurerm_key_vault.secure_kv.id
+      tenant_id    = var.tenant_id
+      object_id    = data.azurerm_client_config.current.object_id
+      
+      key_permissions = [
+        "Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get",
+        "Import", "List", "Purge", "Recover", "Restore", "Sign",
+        "UnwrapKey", "Update", "Verify", "WrapKey"
+      ]
+      
+      secret_permissions = [
+        "Backup", "Delete", "Get", "List", "Purge", "Recover",
+        "Restore", "Set"
+      ]
+      
+      certificate_permissions = [
+        "Backup", "Create", "Delete", "DeleteIssuers", "Get",
+        "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts",
+        "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"
+      ]
+    }
+    
+    # Sample Key for Encryption
+    resource "azurerm_key_vault_key" "encryption_key" {
+      name         = "${var.environment}-encryption-key"
+      key_vault_id = azurerm_key_vault.secure_kv.id
+      key_type     = "RSA-HSM"
+      key_size     = 2048
+      
+      key_opts = [
+        "decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"
+      ]
+      
+      depends_on = [azurerm_key_vault_access_policy.admin_policy]
+      
+      tags = {
+        Environment = var.environment
+        Purpose     = "Encryption"
+      }
+    }
+    
+    # Outputs
+    output "key_vault_id" {
+      description = "The ID of the Key Vault"
+      value       = azurerm_key_vault.secure_kv.id
+    }
+    
+    output "key_vault_uri" {
+      description = "The URI of the Key Vault"
+      value       = azurerm_key_vault.secure_kv.vault_uri
+    }
+    
+    output "encryption_key_id" {
+      description = "The ID of the encryption key"
+      value       = azurerm_key_vault_key.encryption_key.id
+    }
+  security_controls:
+    - "RBAC Authorization"
+    - "Premium SKU with HSM"
+    - "Soft Delete Protection"
+    - "Purge Protection"
+    - "Network Access Controls"
+    - "Audit Logging"
+    - "Key Rotation Capability"
+  compliance_notes: "Meets FIPS 140-2 Level 2, Common Criteria, and SOC 2 Type II requirements"
+
+- name: "Kubernetes RBAC Security"
+  cloud_provider: "GCP"
+  category: "Container Security"
+  description: "Kubernetes RBAC configuration with least privilege access controls for GKE"
+  template_content: |
+    # Kubernetes YAML - RBAC Security Configuration
+    apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: secure-app
+      labels:
+        name: secure-app
+        security-level: high
+    ---
+    # Service Account for Application
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: secure-app-sa
+      namespace: secure-app
+      annotations:
+        iam.gke.io/gcp-service-account: secure-app@PROJECT_ID.iam.gserviceaccount.com
+    automountServiceAccountToken: false
+    ---
+    # Role with minimal permissions
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      namespace: secure-app
+      name: secure-app-role
+    rules:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list"]
+    - apiGroups: [""]
+      resources: ["configmaps"]
+      verbs: ["get", "list"]
+    - apiGroups: [""]
+      resources: ["secrets"]
+      verbs: ["get"]
+      resourceNames: ["app-secrets"]
+    ---
+    # RoleBinding
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: secure-app-binding
+      namespace: secure-app
+    subjects:
+    - kind: ServiceAccount
+      name: secure-app-sa
+      namespace: secure-app
+    roleRef:
+      kind: Role
+      name: secure-app-role
+      apiGroup: rbac.authorization.k8s.io
+    ---
+    # Network Policy
+    apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: secure-app-netpol
+      namespace: secure-app
+    spec:
+      podSelector:
+        matchLabels:
+          app: secure-app
+      policyTypes:
+      - Ingress
+      - Egress
+      ingress:
+      - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+        ports:
+        - protocol: TCP
+          port: 8080
+      egress:
+      - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+        ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+      - to: []
+        ports:
+        - protocol: TCP
+          port: 443
+    ---
+    # Pod Security Policy (if PSP is enabled)
+    apiVersion: policy/v1beta1
+    kind: PodSecurityPolicy
+    metadata:
+      name: secure-app-psp
+    spec:
+      privileged: false
+      allowPrivilegeEscalation: false
+      requiredDropCapabilities:
+        - ALL
+      volumes:
+        - 'configMap'
+        - 'emptyDir'
+        - 'projected'
+        - 'secret'
+        - 'downwardAPI'
+        - 'persistentVolumeClaim'
+      hostNetwork: false
+      hostIPC: false
+      hostPID: false
+      runAsUser:
+        rule: 'MustRunAsNonRoot'
+      supplementalGroups:
+        rule: 'MustRunAs'
+        ranges:
+          - min: 1
+            max: 65535
+      fsGroup:
+        rule: 'MustRunAs'
+        ranges:
+          - min: 1
+            max: 65535
+      readOnlyRootFilesystem: true
+      seLinux:
+        rule: 'RunAsAny'
+    ---
+    # ClusterRole for PSP (if needed)
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: secure-app-psp-user
+    rules:
+    - apiGroups: ['policy']
+      resources: ['podsecuritypolicies']
+      verbs: ['use']
+      resourceNames:
+      - secure-app-psp
+    ---
+    # ClusterRoleBinding for PSP
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: secure-app-psp-binding
+    roleRef:
+      kind: ClusterRole
+      name: secure-app-psp-user
+      apiGroup: rbac.authorization.k8s.io
+    subjects:
+    - kind: ServiceAccount
+      name: secure-app-sa
+      namespace: secure-app
+    ---
+    # Sample Deployment with Security Context
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: secure-app
+      namespace: secure-app
+      labels:
+        app: secure-app
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: secure-app
+      template:
+        metadata:
+          labels:
+            app: secure-app
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          serviceAccountName: secure-app-sa
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+          containers:
+          - name: app
+            image: nginx:1.21-alpine
+            ports:
+            - containerPort: 8080
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 1000
+            resources:
+              limits:
+                cpu: 500m
+                memory: 512Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+              initialDelaySeconds: 30
+              periodSeconds: 10
+            readinessProbe:
+              httpGet:
+                path: /ready
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 5
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /var/cache/nginx
+            - name: run
+              mountPath: /var/run
+          volumes:
+          - name: tmp
+            emptyDir: {}
+          - name: cache
+            emptyDir: {}
+          - name: run
+            emptyDir: {}
+          nodeSelector:
+            cloud.google.com/gke-nodepool: secure-pool
+          tolerations:
+          - key: "dedicated"
+            operator: "Equal"
+            value: "secure-workloads"
+            effect: "NoSchedule"
+  security_controls:
+    - "RBAC Least Privilege"
+    - "Service Account Isolation"
+    - "Network Policy Enforcement"
+    - "Pod Security Standards"
+    - "Non-Root Container Execution"
+    - "Read-Only Root Filesystem"
+    - "Resource Limits"
+    - "Security Context Constraints"
+  compliance_notes: "Follows Kubernetes CIS Benchmark, NSA/CISA Kubernetes Hardening Guidance, and NIST container security standards"
+
+- name: "AWS Lambda Security"
+  cloud_provider: "AWS"
+  category: "Serverless Security"
+  description: "Secure AWS Lambda function configuration with least privilege IAM and monitoring"
+  template_content: |
+    # AWS SAM Template - Secure Lambda Function
+    AWSTemplateFormatVersion: '2010-09-09'
+    Transform: AWS::Serverless-2016-10-31
+    Description: 'Secure Lambda function with least privilege IAM and monitoring'
+    
+    Parameters:
+      Environment:
+        Type: String
+        Default: production
+        AllowedValues: [development, staging, production]
+        Description: Environment name
+      FunctionName:
+        Type: String
+        Default: secure-lambda
+        Description: Name of the Lambda function
+    
+    Globals:
+      Function:
+        Timeout: 30
+        MemorySize: 256
+        Runtime: python3.9
+        Environment:
+          Variables:
+            ENVIRONMENT: !Ref Environment
+            LOG_LEVEL: INFO
+        Tags:
+          Environment: !Ref Environment
+          Security: High
+    
+    Resources:
+      # Lambda Execution Role
+      LambdaExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: !Sub '${FunctionName}-execution-role'
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Principal:
+                  Service: lambda.amazonaws.com
+                Action: sts:AssumeRole
+          ManagedPolicyArns:
+            - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+          Policies:
+            - PolicyName: LambdaSecurePolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - Effect: Allow
+                    Action:
+                      - logs:CreateLogGroup
+                      - logs:CreateLogStream
+                      - logs:PutLogEvents
+                    Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${FunctionName}*'
+                  - Effect: Allow
+                    Action:
+                      - kms:Decrypt
+                      - kms:GenerateDataKey
+                    Resource: !Ref LambdaKMSKey
+                  - Effect: Allow
+                    Action:
+                      - xray:PutTraceSegments
+                      - xray:PutTelemetryRecords
+                    Resource: '*'
+          Tags:
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # KMS Key for Lambda Environment Variables
+      LambdaKMSKey:
+        Type: AWS::KMS::Key
+        Properties:
+          Description: !Sub 'KMS key for ${FunctionName} Lambda encryption'
+          KeyPolicy:
+            Statement:
+              - Sid: Enable IAM User Permissions
+                Effect: Allow
+                Principal:
+                  AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+                Action: 'kms:*'
+                Resource: '*'
+              - Sid: Allow Lambda Service
+                Effect: Allow
+                Principal:
+                  Service: lambda.amazonaws.com
+                Action:
+                  - kms:Decrypt
+                  - kms:GenerateDataKey
+                Resource: '*'
+          Tags:
+            - Key: Name
+              Value: !Sub '${FunctionName}-kms-key'
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # KMS Key Alias
+      LambdaKMSKeyAlias:
+        Type: AWS::KMS::Alias
+        Properties:
+          AliasName: !Sub 'alias/${FunctionName}-key'
+          TargetKeyId: !Ref LambdaKMSKey
+    
+      # Lambda Function
+      SecureLambdaFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+          FunctionName: !Ref FunctionName
+          CodeUri: src/
+          Handler: app.lambda_handler
+          Role: !GetAtt LambdaExecutionRole.Arn
+          KmsKeyArn: !Ref LambdaKMSKey
+          ReservedConcurrencyLimit: 100
+          DeadLetterQueue:
+            Type: SQS
+            TargetArn: !GetAtt DeadLetterQueue.Arn
+          Environment:
+            Variables:
+              SENSITIVE_CONFIG: !Sub '{{resolve:secretsmanager:${SecretName}:SecretString:config}}'
+          VpcConfig:
+            SecurityGroupIds:
+              - !Ref LambdaSecurityGroup
+            SubnetIds:
+              - !Ref PrivateSubnet1
+              - !Ref PrivateSubnet2
+          Tracing: Active
+          Architectures:
+            - x86_64
+          Layers:
+            - !Ref SecurityLayer
+    
+      # Security Layer for common security functions
+      SecurityLayer:
+        Type: AWS::Serverless::LayerVersion
+        Properties:
+          LayerName: !Sub '${FunctionName}-security-layer'
+          Description: Security utilities layer
+          ContentUri: layers/security/
+          CompatibleRuntimes:
+            - python3.9
+          RetentionPolicy: Retain
+    
+      # VPC Security Group for Lambda
+      LambdaSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+          GroupDescription: Security group for Lambda function
+          VpcId: !Ref VPC
+          SecurityGroupEgress:
+            - IpProtocol: tcp
+              FromPort: 443
+              ToPort: 443
+              CidrIp: 0.0.0.0/0
+              Description: HTTPS outbound for AWS API calls
+            - IpProtocol: tcp
+              FromPort: 53
+              ToPort: 53
+              CidrIp: 0.0.0.0/0
+              Description: DNS TCP
+            - IpProtocol: udp
+              FromPort: 53
+              ToPort: 53
+              CidrIp: 0.0.0.0/0
+              Description: DNS UDP
+          Tags:
+            - Key: Name
+              Value: !Sub '${FunctionName}-sg'
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # Dead Letter Queue
+      DeadLetterQueue:
+        Type: AWS::SQS::Queue
+        Properties:
+          QueueName: !Sub '${FunctionName}-dlq'
+          MessageRetentionPeriod: 1209600  # 14 days
+          KmsMasterKeyId: alias/aws/sqs
+          Tags:
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # CloudWatch Log Group
+      LambdaLogGroup:
+        Type: AWS::Logs::LogGroup
+        Properties:
+          LogGroupName: !Sub '/aws/lambda/${FunctionName}'
+          RetentionInDays: 90
+          KmsKeyId: !GetAtt LambdaKMSKey.Arn
+    
+      # Secrets Manager Secret
+      SecretName:
+        Type: AWS::SecretsManager::Secret
+        Properties:
+          Name: !Sub '${FunctionName}/config'
+          Description: Configuration secrets for Lambda function
+          KmsKeyId: !Ref LambdaKMSKey
+          SecretString: !Sub |
+            {
+              "config": "secure-configuration-value"
+            }
+          Tags:
+            - Key: Environment
+              Value: !Ref Environment
+    
+      # CloudWatch Alarm for Errors
+      LambdaErrorAlarm:
+        Type: AWS::CloudWatch::Alarm
+        Properties:
+          AlarmName: !Sub '${FunctionName}-errors'
+          AlarmDescription: Lambda function error rate alarm
+          MetricName: Errors
+          Namespace: AWS/Lambda
+          Statistic: Sum
+          Period: 300
+          EvaluationPeriods: 2
+          Threshold: 5
+          ComparisonOperator: GreaterThanThreshold
+          Dimensions:
+            - Name: FunctionName
+              Value: !Ref SecureLambdaFunction
+          TreatMissingData: notBreaching
+    
+      # CloudWatch Alarm for Duration
+      LambdaDurationAlarm:
+        Type: AWS::CloudWatch::Alarm
+        Properties:
+          AlarmName: !Sub '${FunctionName}-duration'
+          AlarmDescription: Lambda function duration alarm
+          MetricName: Duration
+          Namespace: AWS/Lambda
+          Statistic: Average
+          Period: 300
+          EvaluationPeriods: 2
+          Threshold: 25000  # 25 seconds
+          ComparisonOperator: GreaterThanThreshold
+          Dimensions:
+            - Name: FunctionName
+              Value: !Ref SecureLambdaFunction
+          TreatMissingData: notBreaching
+    
+    Outputs:
+      LambdaFunctionArn:
+        Description: ARN of the Lambda function
+        Value: !GetAtt SecureLambdaFunction.Arn
+        Export:
+          Name: !Sub '${Environment}-${FunctionName}-Arn'
+      
+      LambdaRoleArn:
+        Description: ARN of the Lambda execution role
+        Value: !GetAtt LambdaExecutionRole.Arn
+        Export:
+          Name: !Sub '${Environment}-${FunctionName}-RoleArn'
+  security_controls:
+    - "Least Privilege IAM Role"
+    - "KMS Encryption for Environment Variables"
+    - "VPC Isolation"
+    - "Reserved Concurrency Limits"
+    - "Dead Letter Queue"
+    - "X-Ray Tracing"
+    - "Secrets Manager Integration"
+    - "CloudWatch Monitoring"
+  compliance_notes: "Follows AWS Lambda Security Best Practices, SOC 2 controls, and serverless security guidelines"
