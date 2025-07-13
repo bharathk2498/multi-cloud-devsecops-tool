@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Multi-Cloud DevSecOps Reference Tool{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-shield-alt text-primary me-3"></i>
+                Multi-Cloud DevSecOps Reference
+            </h1>
+            <p class="lead text-muted">
+                Comprehensive security reference for AWS, Azure, and Google Cloud platforms with RL5 expertise framework,
+                Attack Surface Management, and advanced compliance tools.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cloud Platform Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-cloud me-2"></i>Cloud Platform Security Services
+            </h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-warning">
+                <div class="card-body text-center">
+                    <i class="fab fa-aws fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">AWS Security</h5>
+                    <p class="card-text">{{ aws_count }} security services and tools</p>
+                    <p class="text-muted small">
+                        IAM, GuardDuty, Security Hub, CloudTrail, Config, Inspector, and more
+                    </p>
+                    <a href="{{ url_for('aws_security') }}" class="btn btn-warning">
+                        <i class="fas fa-arrow-right me-2"></i>Explore AWS
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-body text-center">
+                    <i class="fab fa-microsoft fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Azure Security</h5>
+                    <p class="card-text">{{ azure_count }} security services and tools</p>
+                    <p class="text-muted small">
+                        Azure AD, Security Center, Sentinel, Key Vault, Defender, and more
+                    </p>
+                    <a href="{{ url_for('azure_security') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-right me-2"></i>Explore Azure
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-success">
+                <div class="card-body text-center">
+                    <i class="fab fa-google fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Google Cloud Security</h5>
+                    <p class="card-text">{{ gcp_count }} security services and tools</p>
+                    <p class="text-muted small">
+                        Cloud IAM, Security Command Center, Cloud Armor, Binary Authorization, and more
+                    </p>
+                    <a href="{{ url_for('gcp_security') }}" class="btn btn-success">
+                        <i class="fas fa-arrow-right me-2"></i>Explore GCP
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Tools and Frameworks -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-tools me-2"></i>Security Tools & Frameworks
+            </h2>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-crosshairs text-danger me-2"></i>
+                        Attack Surface Management
+                    </h5>
+                    <p class="card-text">
+                        Advanced ASM methodology with multi-cloud integration and comprehensive 
+                        vulnerability assessment tools.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Asset Discovery</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Vulnerability Scanning</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Risk Assessment</li>
+                    </ul>
+                    <a href="{{ url_for('attack_surface') }}" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-bug text-warning me-2"></i>
+                        Vulnerability Tools Database
+                    </h5>
+                    <p class="card-text">
+                        Comprehensive database of security scanning tools and configuration 
+                        analyzers for all cloud platforms.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Cloud-native Tools</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Third-party Solutions</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Integration Guides</li>
+                    </ul>
+                    <a href="{{ url_for('vulnerability_tools') }}" class="btn btn-secondary">Explore Tools</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compliance and Standards -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-clipboard-check me-2"></i>Compliance & Standards
+            </h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-gavel fa-2x text-primary mb-3"></i>
+                    <h5 class="card-title">Compliance Frameworks</h5>
+                    <p class="card-text">{{ compliance_count }} frameworks supported</p>
+                    <p class="text-muted small">
+                        NIST CSF, SOC 2, ISO 27001, PCI-DSS, HIPAA, FedRAMP
+                    </p>
+                    <a href="{{ url_for('compliance') }}" class="btn btn-primary">View Frameworks</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-crosshairs fa-2x text-danger mb-3"></i>
+                    <h5 class="card-title">MITRE ATT&CK</h5>
+                    <p class="card-text">Cloud-specific tactics & techniques</p>
+                    <p class="text-muted small">
+                        Multi-cloud mitigations and detection strategies
+                    </p>
+                    <a href="{{ url_for('mitre_attack') }}" class="btn btn-danger">Explore ATT&CK</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-code fa-2x text-info mb-3"></i>
+                    <h5 class="card-title">IaC Security</h5>
+                    <p class="card-text">Infrastructure as Code best practices</p>
+                    <p class="text-muted small">
+                        Terraform, CloudFormation, ARM templates with security controls
+                    </p>
+                    <a href="{{ url_for('iac_security') }}" class="btn btn-info">View Templates</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-star me-2"></i>Key Features
+            </h2>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-wifi-slash text-success fa-2x me-3"></i>
+                <div>
+                    <h6 class="mb-1">Offline Capable</h6>
+                    <p class="text-muted mb-0">No external API dependencies for secure environments</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-download text-primary fa-2x me-3"></i>
+                <div>
+                    <h6 class="mb-1">Export Ready</h6>
+                    <p class="text-muted mb-0">Generate compliance reports and documentation</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-mobile-alt text-info fa-2x me-3"></i>
+                <div>
+                    <h6 class="mb-1">Mobile Responsive</h6>
+                    <p class="text-muted mb-0">Optimized for field security assessments</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-balance-scale text-warning fa-2x me-3"></i>
+                <div>
+                    <h6 class="mb-1">Platform Comparison</h6>
+                    <p class="text-muted mb-0">Side-by-side security service comparisons</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
