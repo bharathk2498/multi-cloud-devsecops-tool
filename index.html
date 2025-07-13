@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Cloud DevSecOps Reference Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --dark-bg: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(52, 73, 94, 0.9));
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .aws-card .card-header { background: linear-gradient(45deg, #FF9900, #FFB84D); }
+        .azure-card .card-header { background: linear-gradient(45deg, #0078D4, #40E0D0); }
+        .gcp-card .card-header { background: linear-gradient(45deg, #4285F4, #34A853); }
+        .compliance-card .card-header { background: linear-gradient(45deg, #8E44AD, #3498DB); }
+        .mitre-card .card-header { background: linear-gradient(45deg, #E74C3C, #C0392B); }
+        .tools-card .card-header { background: linear-gradient(45deg, #16A085, #27AE60); }
+
+        .search-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 50px;
+            padding: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .stats-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--warning-color);
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .service-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .filter-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .hidden { display: none !important; }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-shield-alt me-2"></i>
+                Multi-Cloud DevSecOps Tool
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#aws">AWS Security</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#azure">Azure Security</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gcp">GCP Security</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#compliance">Compliance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mitre">MITRE ATT&CK</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tools">Security Tools</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#comparison">Comparison</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">
+                        <i class="fas fa-cloud-security me-3"></i>
+                        Multi-Cloud DevSecOps Reference Tool
+                    </h1>
+                    <p class="lead mb-4">
+                        Comprehensive security services, compliance frameworks, and best practices for AWS, Azure, and Google Cloud Platform. 
+                        Your centralized knowledge base for cloud security architecture.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-warning btn-custom" onclick="showSection('aws')">
+                            <i class="fab fa-aws me-2"></i>AWS Security
+                        </button>
+                        <button class="btn btn-info btn-custom" onclick="showSection('azure')">
+                            <i class="fab fa-microsoft me-2"></i>Azure Security
+                        </button>
+                        <button class="btn btn-success btn-custom" onclick="showSection('gcp')">
+                            <i class="fab fa-google me-2"></i>GCP Security
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="stats-container">
+                        <div class="row">
+                            <div class="col-4 stat-item">
+                                <div class="stat-number" id="aws-count">15</div>
+                                <div>AWS Services</div>
+                            </div>
+                            <div class="col-4 stat-item">
+                                <div class="stat-number" id="azure-count">12</div>
+                                <div>Azure Services</div>
+                            </div>
+                            <div class="col-4 stat-item">
+                                <div class="stat-number" id="gcp-count">10</div>
+                                <div>GCP Services</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Search -->
+            <div class="search-container">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-0">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" class="form-control search-input" id="globalSearch" 
+                           placeholder="Search security services, compliance frameworks, tools...">
+                </div>
+                <div id="searchResults" class="mt-3"></div>
+            </div>
+
+            <!-- Quick Access Cards -->
+            <div class="row mt-5">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card aws-card" onclick="showSection('aws')">
+                        <div class="card-header text-white text-center">
+                            <i class="fab fa-aws fa-2x"></i>
+                            <h5 class="mt-2">AWS Security</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>IAM, GuardDuty, Security Hub, WAF, Inspector, CloudTrail and more comprehensive security services.</p>
+                            <div class="text-muted">
+                                <span id="aws-service-count">15</span> services available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card azure-card" onclick="showSection('azure')">
+                        <div class="card-header text-white text-center">
+                            <i class="fab fa-microsoft fa-2x"></i>
+                            <h5 class="mt-2">Azure Security</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Azure AD, Security Center, Sentinel, Key Vault, Defender and comprehensive security portfolio.</p>
+                            <div class="text-muted">
+                                <span id="azure-service-count">12</span> services available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card gcp-card" onclick="showSection('gcp')">
+                        <div class="card-header text-white text-center">
+                            <i class="fab fa-google fa-2x"></i>
+                            <h5 class="mt-2">GCP Security</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Cloud IAM, Security Command Center, Cloud Armor, KMS and Google's security services.</p>
+                            <div class="text-muted">
+                                <span id="gcp-service-count">10</span> services available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card compliance-card" onclick="showSection('compliance')">
+                        <div class="card-header text-white text-center">
+                            <i class="fas fa-clipboard-check fa-2x"></i>
+                            <h5 class="mt-2">Compliance</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>NIST, SOC 2, ISO 27001, CIS Controls, GDPR and other compliance frameworks with cloud mappings.</p>
+                            <div class="text-muted">
+                                <span id="compliance-count">8</span> frameworks available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card mitre-card" onclick="showSection('mitre')">
+                        <div class="card-header text-white text-center">
+                            <i class="fas fa-crosshairs fa-2x"></i>
+                            <h5 class="mt-2">MITRE ATT&CK</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Cloud-specific tactics, techniques, and mitigation strategies based on MITRE ATT&CK framework.</p>
+                            <div class="text-muted">
+                                <span id="mitre-count">14</span> tactics available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card tools-card" onclick="showSection('tools')">
+                        <div class="card-header text-white text-center">
+                            <i class="fas fa-tools fa-2x"></i>
+                            <h5 class="mt-2">Security Tools</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Vulnerability scanners, CSPM tools, SAST/DAST solutions and security automation platforms.</p>
+                            <div class="text-muted">
+                                <span id="tools-count">25</span> tools available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections Container -->
+    <div class="container-fluid">
+        <!-- AWS Security Section -->
+        <section id="aws" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fab fa-aws text-warning"></i>
+                            AWS Security Services
+                        </h2>
+                        <div class="filter-container">
+                            <h5>Filter by Category:</h5>
+                            <div class="btn-group flex-wrap" role="group">
+                                <button class="btn btn-outline-primary filter-btn" data-filter="all" data-section="aws">All</button>
+                                <button class="btn btn-outline-primary filter-btn" data-filter="identity" data-section="aws">Identity & Access</button>
+                                <button class="btn btn-outline-primary filter-btn" data-filter="threat" data-section="aws">Threat Detection</button>
+                                <button class="btn btn-outline-primary filter-btn" data-filter="data" data-section="aws">Data Protection</button>
+                                <button class="btn btn-outline-primary filter-btn" data-filter="network" data-section="aws">Network Security</button>
+                                <button class="btn btn-outline-primary filter-btn" data-filter="compliance" data-section="aws">Compliance</button>
+                            </div>
+                        </div>
+                        <div id="awsServices" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Azure Security Section -->
+        <section id="azure" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fab fa-microsoft text-info"></i>
+                            Azure Security Services
+                        </h2>
+                        <div class="filter-container">
+                            <h5>Filter by Category:</h5>
+                            <div class="btn-group flex-wrap" role="group">
+                                <button class="btn btn-outline-info filter-btn" data-filter="all" data-section="azure">All</button>
+                                <button class="btn btn-outline-info filter-btn" data-filter="identity" data-section="azure">Identity & Access</button>
+                                <button class="btn btn-outline-info filter-btn" data-filter="threat" data-section="azure">Threat Protection</button>
+                                <button class="btn btn-outline-info filter-btn" data-filter="data" data-section="azure">Data Security</button>
+                                <button class="btn btn-outline-info filter-btn" data-filter="network" data-section="azure">Network Security</button>
+                                <button class="btn btn-outline-info filter-btn" data-filter="governance" data-section="azure">Governance</button>
+                            </div>
+                        </div>
+                        <div id="azureServices" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GCP Security Section -->
+        <section id="gcp" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fab fa-google text-success"></i>
+                            Google Cloud Security Services
+                        </h2>
+                        <div class="filter-container">
+                            <h5>Filter by Category:</h5>
+                            <div class="btn-group flex-wrap" role="group">
+                                <button class="btn btn-outline-success filter-btn" data-filter="all" data-section="gcp">All</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="identity" data-section="gcp">Identity & Access</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="threat" data-section="gcp">Threat Detection</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="data" data-section="gcp">Data Protection</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="network" data-section="gcp">Network Security</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="application" data-section="gcp">Application Security</button>
+                            </div>
+                        </div>
+                        <div id="gcpServices" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compliance Section -->
+        <section id="compliance" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fas fa-clipboard-check text-primary"></i>
+                            Compliance Frameworks
+                        </h2>
+                        <div id="complianceFrameworks" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MITRE ATT&CK Section -->
+        <section id="mitre" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fas fa-crosshairs text-danger"></i>
+                            MITRE ATT&CK Framework
+                        </h2>
+                        <div id="mitreTactics" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Tools Section -->
+        <section id="tools" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fas fa-tools text-success"></i>
+                            Security Tools Database
+                        </h2>
+                        <div class="filter-container">
+                            <h5>Filter by Category:</h5>
+                            <div class="btn-group flex-wrap" role="group">
+                                <button class="btn btn-outline-success filter-btn" data-filter="all" data-section="tools">All</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="vulnerability" data-section="tools">Vulnerability Scanning</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="cspm" data-section="tools">CSPM</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="sast" data-section="tools">SAST/DAST</button>
+                                <button class="btn btn-outline-success filter-btn" data-filter="container" data-section="tools">Container Security</button>
+                            </div>
+                        </div>
+                        <div id="securityTools" class="row"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparison" class="section hidden">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">
+                            <i class="fas fa-balance-scale text-warning"></i>
+                            Cross-Platform Security Comparison
+                        </h2>
+                        <div id="comparisonMatrix" class="table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="btn btn-primary rounded-circle position-fixed" 
+            style="bottom: 20px; right: 20px; z-index: 1000; display: none;">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/data.js"></script>
+    <script src="static/js/app.js"></script>
+</body>
+</html>
