@@ -1,0 +1,111 @@
+# GitHub Pages Configuration for Multi-Cloud DevSecOps Tool
+
+# Site settings
+title: "Multi-Cloud DevSecOps Reference Tool"
+description: "Comprehensive security services, compliance frameworks, and best practices for AWS, Azure, and Google Cloud Platform"
+author: "Bharath Kumar Byru"
+email: "bharathk9339@gmail.com"
+url: "https://bharathk2498.github.io"
+baseurl: "/multi-cloud-devsecops-tool"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO Settings
+lang: en_US
+twitter:
+  username: bharathk2498
+  card: summary_large_image
+
+social:
+  name: Bharath Kumar Byru
+  links:
+    - https://github.com/bharathk2498
+    - https://linkedin.com/in/bharathkumarbyru
+
+# Collections
+collections:
+  services:
+    output: false
+  frameworks:
+    output: false
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      author: Bharath Kumar Byru
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - app.py
+  - main.py
+  - models.py
+  - routes.py
+  - data_loader.py
+  - requirements.txt
+  - Dockerfile
+  - docker-compose.yml
+  - run.sh
+  - test_app.py
+  - .env.example
+  - data/
+  - templates/
+  - venv/
+  - __pycache__/
+  - *.pyc
+  - *.db
+  - .pytest_cache/
+
+# Include files
+include:
+  - _redirects
+
+# GitHub Pages specific settings
+github: [Repository metadata]
+
+# Custom variables
+version: "2.0.0"
+build_date: "2025-07-13"
+
+# Analytics (optional - add your Google Analytics ID)
+google_analytics: UA-XXXXXXXXX-X
+
+# Comments (optional - add Disqus shortname)
+disqus:
+  shortname: multi-cloud-devsecops
+
+# Social sharing
+sharing:
+  twitter: true
+  linkedin: true
+  github: true
+
+# Custom CSS and JS
+custom_css: 
+  - /static/css/custom.css
+
+custom_js:
+  - /static/js/data.js
+  - /static/js/app.js
+
+# Repository info
+repository: bharathk2498/multi-cloud-devsecops-tool
+github_username: bharathk2498
