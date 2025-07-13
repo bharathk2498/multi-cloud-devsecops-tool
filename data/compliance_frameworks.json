@@ -1,0 +1,232 @@
+[
+  {
+    "name": "NIST Cybersecurity Framework",
+    "description": "Framework for improving critical infrastructure cybersecurity consisting of standards, guidelines, and best practices",
+    "controls": ["Identify", "Protect", "Detect", "Respond", "Recover"],
+    "aws_mappings": {
+      "Identify": ["Config", "CloudTrail", "Systems Manager", "Well-Architected Tool"],
+      "Protect": ["IAM", "WAF", "Shield", "KMS", "VPC Security Groups"],
+      "Detect": ["GuardDuty", "Security Hub", "CloudWatch", "Macie"],
+      "Respond": ["Lambda", "Systems Manager Automation", "SNS", "CloudFormation"],
+      "Recover": ["Backup", "S3 Cross-Region Replication", "Route 53", "Auto Scaling"]
+    },
+    "azure_mappings": {
+      "Identify": ["Security Center", "Azure Resource Graph", "Azure Monitor", "Policy"],
+      "Protect": ["Azure AD", "Key Vault", "Network Security Groups", "Application Gateway"],
+      "Detect": ["Azure Sentinel", "Security Center", "Monitor", "Advanced Threat Protection"],
+      "Respond": ["Logic Apps", "Automation", "Security Center", "Azure Functions"],
+      "Recover": ["Backup", "Site Recovery", "Traffic Manager", "Auto Scaling"]
+    },
+    "gcp_mappings": {
+      "Identify": ["Security Command Center", "Cloud Asset Inventory", "Cloud Monitoring"],
+      "Protect": ["Cloud IAM", "Cloud Armor", "VPC Firewall", "Cloud KMS"],
+      "Detect": ["Security Command Center", "Chronicle", "Cloud Monitoring", "Event Threat Detection"],
+      "Respond": ["Cloud Functions", "Cloud Pub/Sub", "Cloud Scheduler", "Deployment Manager"],
+      "Recover": ["Cloud Storage", "Persistent Disk Snapshots", "Cloud Load Balancing", "Managed Instance Groups"]
+    }
+  },
+  {
+    "name": "SOC 2 Type II",
+    "description": "Security, availability, processing integrity, confidentiality, and privacy controls for service organizations",
+    "controls": ["Security", "Availability", "Processing Integrity", "Confidentiality", "Privacy"],
+    "aws_mappings": {
+      "Security": ["GuardDuty", "IAM", "Security Hub", "CloudTrail", "Config"],
+      "Availability": ["Auto Scaling", "ELB", "Route 53", "Multi-AZ Deployments"],
+      "Processing Integrity": ["CloudWatch", "X-Ray", "Config Rules", "Lambda"],
+      "Confidentiality": ["KMS", "CloudHSM", "VPC", "WAF", "Certificate Manager"],
+      "Privacy": ["Macie", "S3 Bucket Policies", "IAM Policies", "VPC Endpoints"]
+    },
+    "azure_mappings": {
+      "Security": ["Security Center", "Azure AD", "Key Vault", "Monitor"],
+      "Availability": ["Load Balancer", "Traffic Manager", "Availability Sets", "Auto Scaling"],
+      "Processing Integrity": ["Monitor", "Application Insights", "Policy", "Automation"],
+      "Confidentiality": ["Key Vault", "Information Protection", "VNet", "Application Gateway"],
+      "Privacy": ["Information Protection", "Privacy Management", "Data Subject Requests"]
+    },
+    "gcp_mappings": {
+      "Security": ["Security Command Center", "Cloud IAM", "Cloud Armor", "Audit Logs"],
+      "Availability": ["Load Balancing", "Cloud DNS", "Managed Instance Groups", "Multi-Region"],
+      "Processing Integrity": ["Cloud Monitoring", "Error Reporting", "Cloud Trace", "Cloud Functions"],
+      "Confidentiality": ["Cloud KMS", "VPC", "Private Google Access", "Certificate Manager"],
+      "Privacy": ["Cloud DLP", "Data Catalog", "Cloud IAM", "VPC Service Controls"]
+    }
+  },
+  {
+    "name": "PCI DSS",
+    "description": "Payment Card Industry Data Security Standard for protecting cardholder data",
+    "controls": ["Network Security", "Data Protection", "Vulnerability Management", "Access Control", "Monitoring", "Information Security Policy"],
+    "aws_mappings": {
+      "Network Security": ["VPC", "Security Groups", "NACLs", "WAF", "Shield"],
+      "Data Protection": ["KMS", "CloudHSM", "S3 Encryption", "EBS Encryption"],
+      "Vulnerability Management": ["Inspector", "Systems Manager Patch Manager", "Security Hub"],
+      "Access Control": ["IAM", "MFA", "CloudTrail", "Config"],
+      "Monitoring": ["CloudWatch", "GuardDuty", "CloudTrail", "VPC Flow Logs"],
+      "Information Security Policy": ["Organizations", "Control Tower", "Config Rules"]
+    },
+    "azure_mappings": {
+      "Network Security": ["Virtual Network", "NSG", "Application Gateway", "Firewall"],
+      "Data Protection": ["Key Vault", "Storage Service Encryption", "Disk Encryption"],
+      "Vulnerability Management": ["Security Center", "Update Management", "Defender"],
+      "Access Control": ["Azure AD", "PIM", "MFA", "Activity Log"],
+      "Monitoring": ["Monitor", "Security Center", "Sentinel", "Network Watcher"],
+      "Information Security Policy": ["Policy", "Management Groups", "Blueprints"]
+    },
+    "gcp_mappings": {
+      "Network Security": ["VPC Firewall", "Cloud Armor", "Private Google Access"],
+      "Data Protection": ["Cloud KMS", "Application-layer Secrets Encryption", "Cloud HSM"],
+      "Vulnerability Management": ["Security Command Center", "Container Analysis", "Web Security Scanner"],
+      "Access Control": ["Cloud IAM", "Context-aware Access", "Audit Logs"],
+      "Monitoring": ["Cloud Monitoring", "Cloud Logging", "Security Command Center"],
+      "Information Security Policy": ["Organization Policy", "Cloud Asset Inventory", "Resource Manager"]
+    }
+  },
+  {
+    "name": "HIPAA",
+    "description": "Health Insurance Portability and Accountability Act requirements for protecting health information",
+    "controls": ["Administrative Safeguards", "Physical Safeguards", "Technical Safeguards"],
+    "aws_mappings": {
+      "Administrative Safeguards": ["IAM", "Organizations", "CloudTrail", "Config"],
+      "Physical Safeguards": ["Dedicated Instances", "CloudHSM", "Direct Connect"],
+      "Technical Safeguards": ["KMS", "VPC", "WAF", "GuardDuty", "Macie"]
+    },
+    "azure_mappings": {
+      "Administrative Safeguards": ["Azure AD", "Management Groups", "Activity Log", "Policy"],
+      "Physical Safeguards": ["Dedicated Host", "Key Vault HSM", "ExpressRoute"],
+      "Technical Safeguards": ["Key Vault", "VNet", "Application Gateway", "Information Protection"]
+    },
+    "gcp_mappings": {
+      "Administrative Safeguards": ["Cloud IAM", "Resource Manager", "Audit Logs", "Organization Policy"],
+      "Physical Safeguards": ["Sole-tenant Nodes", "Cloud HSM", "Dedicated Interconnect"],
+      "Technical Safeguards": ["Cloud KMS", "VPC", "Cloud Armor", "Cloud DLP"]
+    }
+  },
+  {
+    "name": "ISO 27001",
+    "description": "International standard for information security management systems",
+    "controls": ["Information Security Policies", "Risk Management", "Asset Management", "Access Control", "Cryptography", "Operations Security", "Communications Security", "System Development", "Supplier Relationships", "Incident Management", "Business Continuity", "Compliance"],
+    "aws_mappings": {
+      "Information Security Policies": ["Organizations", "Control Tower", "Service Catalog"],
+      "Risk Management": ["Trusted Advisor", "Well-Architected Tool", "Config"],
+      "Asset Management": ["Config", "Systems Manager", "Resource Groups"],
+      "Access Control": ["IAM", "Cognito", "Directory Service", "SSO"],
+      "Cryptography": ["KMS", "CloudHSM", "Certificate Manager"],
+      "Operations Security": ["CloudWatch", "CloudTrail", "Systems Manager"],
+      "Communications Security": ["VPC", "Direct Connect", "VPN"],
+      "System Development": ["CodeCommit", "CodeBuild", "CodePipeline", "CodeDeploy"],
+      "Supplier Relationships": ["Artifact", "Marketplace", "Support"],
+      "Incident Management": ["Support", "Personal Health Dashboard", "SNS"],
+      "Business Continuity": ["Backup", "S3 Cross-Region Replication", "Route 53"],
+      "Compliance": ["Audit Manager", "Artifact", "Config Rules"]
+    },
+    "azure_mappings": {
+      "Information Security Policies": ["Management Groups", "Policy", "Blueprints"],
+      "Risk Management": ["Advisor", "Security Center", "Monitor"],
+      "Asset Management": ["Resource Graph", "Inventory", "Tags"],
+      "Access Control": ["Azure AD", "PIM", "Conditional Access"],
+      "Cryptography": ["Key Vault", "Information Protection"],
+      "Operations Security": ["Monitor", "Security Center", "Automation"],
+      "Communications Security": ["Virtual Network", "ExpressRoute", "VPN Gateway"],
+      "System Development": ["DevOps", "Azure Repos", "Pipelines"],
+      "Supplier Relationships": ["Marketplace", "Support", "Service Health"],
+      "Incident Management": ["Support", "Service Health", "Monitor"],
+      "Business Continuity": ["Backup", "Site Recovery", "Traffic Manager"],
+      "Compliance": ["Compliance Manager", "Policy", "Security Center"]
+    },
+    "gcp_mappings": {
+      "Information Security Policies": ["Resource Manager", "Organization Policy"],
+      "Risk Management": ["Security Command Center", "Cloud Monitoring"],
+      "Asset Management": ["Cloud Asset Inventory", "Resource Manager"],
+      "Access Control": ["Cloud IAM", "Context-aware Access", "Identity-Aware Proxy"],
+      "Cryptography": ["Cloud KMS", "Cloud HSM", "Certificate Authority Service"],
+      "Operations Security": ["Cloud Monitoring", "Cloud Logging", "Cloud Scheduler"],
+      "Communications Security": ["VPC", "Cloud Interconnect", "Cloud VPN"],
+      "System Development": ["Cloud Source Repositories", "Cloud Build", "Cloud Deploy"],
+      "Supplier Relationships": ["Marketplace", "Support", "Cloud Status"],
+      "Incident Management": ["Support", "Cloud Status", "Cloud Monitoring"],
+      "Business Continuity": ["Cloud Storage", "Persistent Disk Snapshots", "Cloud Load Balancing"],
+      "Compliance": ["Security Command Center", "Compliance Reports", "Assured Workloads"]
+    }
+  },
+  {
+    "name": "FedRAMP",
+    "description": "Federal Risk and Authorization Management Program for cloud products and services",
+    "controls": ["Access Control", "Audit and Accountability", "Configuration Management", "Contingency Planning", "Identification and Authentication", "Incident Response", "Maintenance", "Media Protection", "Personnel Security", "Physical Protection", "Risk Assessment", "System and Communications Protection", "System and Information Integrity"],
+    "aws_mappings": {
+      "Access Control": ["IAM", "Cognito", "Directory Service"],
+      "Audit and Accountability": ["CloudTrail", "Config", "CloudWatch"],
+      "Configuration Management": ["Config", "Systems Manager", "CloudFormation"],
+      "Contingency Planning": ["Backup", "S3 Cross-Region Replication", "Route 53"],
+      "Identification and Authentication": ["IAM", "MFA", "Cognito"],
+      "Incident Response": ["GuardDuty", "Security Hub", "SNS"],
+      "Maintenance": ["Systems Manager", "EC2 Systems Manager", "Trusted Advisor"],
+      "Media Protection": ["KMS", "S3", "EBS Encryption"],
+      "Personnel Security": ["IAM", "Organizations", "CloudTrail"],
+      "Physical Protection": ["Direct Connect", "Dedicated Instances"],
+      "Risk Assessment": ["Inspector", "Trusted Advisor", "Well-Architected Tool"],
+      "System and Communications Protection": ["VPC", "WAF", "Shield", "Certificate Manager"],
+      "System and Information Integrity": ["GuardDuty", "Inspector", "Macie"]
+    },
+    "azure_mappings": {
+      "Access Control": ["Azure AD", "PIM", "Conditional Access"],
+      "Audit and Accountability": ["Activity Log", "Monitor", "Security Center"],
+      "Configuration Management": ["Policy", "Automation", "Resource Manager"],
+      "Contingency Planning": ["Backup", "Site Recovery", "Traffic Manager"],
+      "Identification and Authentication": ["Azure AD", "MFA", "B2B"],
+      "Incident Response": ["Security Center", "Sentinel", "Monitor"],
+      "Maintenance": ["Update Management", "Automation", "Advisor"],
+      "Media Protection": ["Key Vault", "Storage Service Encryption"],
+      "Personnel Security": ["Azure AD", "PIM", "Activity Log"],
+      "Physical Protection": ["ExpressRoute", "Dedicated Host"],
+      "Risk Assessment": ["Security Center", "Advisor", "Defender"],
+      "System and Communications Protection": ["Virtual Network", "Application Gateway", "Key Vault"],
+      "System and Information Integrity": ["Security Center", "Defender", "Advanced Threat Protection"]
+    },
+    "gcp_mappings": {
+      "Access Control": ["Cloud IAM", "Context-aware Access"],
+      "Audit and Accountability": ["Cloud Audit Logs", "Cloud Monitoring"],
+      "Configuration Management": ["Deployment Manager", "Cloud Config"],
+      "Contingency Planning": ["Cloud Storage", "Persistent Disk Snapshots"],
+      "Identification and Authentication": ["Cloud Identity", "Cloud IAM"],
+      "Incident Response": ["Security Command Center", "Cloud Monitoring"],
+      "Maintenance": ["Cloud Scheduler", "Compute Engine"],
+      "Media Protection": ["Cloud KMS", "Cloud Storage encryption"],
+      "Personnel Security": ["Cloud IAM", "Audit Logs"],
+      "Physical Protection": ["Dedicated Interconnect", "Sole-tenant Nodes"],
+      "Risk Assessment": ["Security Command Center", "Web Security Scanner"],
+      "System and Communications Protection": ["VPC", "Cloud Armor", "Cloud KMS"],
+      "System and Information Integrity": ["Security Command Center", "Binary Authorization"]
+    }
+  },
+  {
+    "name": "GDPR",
+    "description": "General Data Protection Regulation for data protection and privacy in the European Union",
+    "controls": ["Lawful Basis", "Data Minimization", "Purpose Limitation", "Accuracy", "Storage Limitation", "Integrity and Confidentiality", "Accountability"],
+    "aws_mappings": {
+      "Lawful Basis": ["IAM Policies", "CloudTrail", "Data Processing Agreements"],
+      "Data Minimization": ["Macie", "S3 Intelligent Tiering", "Lifecycle Policies"],
+      "Purpose Limitation": ["IAM Policies", "S3 Bucket Policies", "Data Catalogs"],
+      "Accuracy": ["Data Pipeline", "Glue", "Database Migration Service"],
+      "Storage Limitation": ["S3 Lifecycle", "Glacier", "Data Retention Policies"],
+      "Integrity and Confidentiality": ["KMS", "S3 Encryption", "VPC", "WAF"],
+      "Accountability": ["CloudTrail", "Config", "Organizations", "Control Tower"]
+    },
+    "azure_mappings": {
+      "Lawful Basis": ["Azure AD", "Policy", "Data Processing Agreements"],
+      "Data Minimization": ["Information Protection", "Data Catalog", "Lifecycle Management"],
+      "Purpose Limitation": ["Information Protection", "Data Classification"],
+      "Accuracy": ["Data Factory", "Data Quality", "Master Data Services"],
+      "Storage Limitation": ["Lifecycle Management", "Archive Storage"],
+      "Integrity and Confidentiality": ["Key Vault", "Information Protection", "VNet"],
+      "Accountability": ["Activity Log", "Policy", "Management Groups"]
+    },
+    "gcp_mappings": {
+      "Lawful Basis": ["Cloud IAM", "Organization Policy", "Data Processing Agreements"],
+      "Data Minimization": ["Cloud DLP", "Data Catalog", "Cloud Storage Lifecycle"],
+      "Purpose Limitation": ["Cloud DLP", "Data Catalog", "Cloud IAM"],
+      "Accuracy": ["Dataflow", "Data Fusion", "Cloud SQL"],
+      "Storage Limitation": ["Cloud Storage Lifecycle", "Archival Storage"],
+      "Integrity and Confidentiality": ["Cloud KMS", "Cloud DLP", "VPC"],
+      "Accountability": ["Cloud Audit Logs", "Cloud Monitoring", "Organization Policy"]
+    }
+  }
+]
