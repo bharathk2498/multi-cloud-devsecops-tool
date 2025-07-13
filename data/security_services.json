@@ -1,0 +1,233 @@
+[
+  {
+    "name": "AWS Identity and Access Management (IAM)",
+    "cloud_provider": "AWS",
+    "category": "Identity & Access Management",
+    "description": "Securely manage access to AWS services and resources for your users",
+    "features": ["User Management", "Role-based Access", "Multi-factor Authentication", "Identity Federation", "Access Analyzer", "Policy Simulation"],
+    "implementation_guide": "Create users, groups, and roles with least privilege principle. Enable MFA for all users. Use IAM Access Analyzer to review external access.",
+    "best_practices": ["Use roles instead of users for applications", "Enable MFA", "Regular access reviews", "Use IAM conditions", "Implement least privilege"],
+    "cost_info": "Free service - no additional charges",
+    "compliance_frameworks": ["SOC 2", "ISO 27001", "FedRAMP", "HIPAA"]
+  },
+  {
+    "name": "Amazon GuardDuty",
+    "cloud_provider": "AWS",
+    "category": "Threat Detection",
+    "description": "Intelligent threat detection service that continuously monitors your AWS accounts and workloads",
+    "features": ["Machine Learning Detection", "Threat Intelligence", "DNS Logs Analysis", "VPC Flow Logs", "Malware Detection", "Cryptocurrency Mining Detection"],
+    "implementation_guide": "Enable GuardDuty in all regions. Configure SNS notifications for findings. Set up automated remediation with Lambda.",
+    "best_practices": ["Enable in all regions", "Integrate with Security Hub", "Automate response actions", "Customize threat lists", "Monitor suppression rules"],
+    "cost_info": "Usage-based pricing starting at $4.00 per million events",
+    "compliance_frameworks": ["SOC 2", "PCI DSS", "ISO 27001"]
+  },
+  {
+    "name": "AWS Security Hub",
+    "cloud_provider": "AWS",
+    "category": "Cloud Security Posture Management",
+    "description": "Centralized security findings management across AWS accounts and services",
+    "features": ["Centralized Dashboard", "Security Standards", "Custom Insights", "Automated Remediation", "Cross-Account Aggregation", "Compliance Monitoring"],
+    "implementation_guide": "Enable Security Hub in master account. Configure security standards. Set up custom insights for your environment.",
+    "best_practices": ["Enable all security standards", "Create custom insights", "Automate finding remediation", "Use cross-account aggregation"],
+    "cost_info": "$0.0030 per security check per month",
+    "compliance_frameworks": ["AWS Foundational Security Standard", "CIS Controls", "PCI DSS"]
+  },
+  {
+    "name": "AWS CloudTrail",
+    "cloud_provider": "AWS",
+    "category": "Audit & Compliance",
+    "description": "Record and monitor account activity across your AWS infrastructure",
+    "features": ["API Call Logging", "Event History", "Multi-Region Trails", "Log File Integrity", "CloudWatch Integration", "Insights"],
+    "implementation_guide": "Create organization-wide trail. Enable log file validation. Configure CloudWatch alarms for critical events.",
+    "best_practices": ["Enable in all regions", "Use S3 bucket encryption", "Set up log file integrity validation", "Monitor unusual activity"],
+    "cost_info": "First copy of management events free per region, $2.00 per 100,000 data events",
+    "compliance_frameworks": ["SOC 2", "PCI DSS", "HIPAA", "FedRAMP"]
+  },
+  {
+    "name": "AWS Config",
+    "cloud_provider": "AWS",
+    "category": "Configuration Management",
+    "description": "Assess, audit, and evaluate configurations of your AWS resources",
+    "features": ["Configuration Recording", "Compliance Monitoring", "Change Tracking", "Remediation Actions", "Conformance Packs", "Multi-Account Setup"],
+    "implementation_guide": "Set up configuration recorder for all resource types. Deploy conformance packs for compliance frameworks.",
+    "best_practices": ["Record all resource types", "Use conformance packs", "Set up remediation actions", "Monitor configuration drift"],
+    "cost_info": "$0.003 per configuration item recorded per month",
+    "compliance_frameworks": ["CIS Controls", "AWS Operational Best Practices", "NIST"]
+  },
+  {
+    "name": "Amazon Inspector",
+    "cloud_provider": "AWS",
+    "category": "Vulnerability Assessment",
+    "description": "Automated security assessment service for applications deployed on AWS",
+    "features": ["Application Security Assessment", "Network Reachability Analysis", "Runtime Behavior Analysis", "Container Image Scanning", "Lambda Function Scanning"],
+    "implementation_guide": "Install Inspector agent on EC2 instances. Create assessment targets and templates. Configure automated scanning.",
+    "best_practices": ["Regular assessment schedules", "Integrate with CI/CD pipelines", "Monitor for new vulnerabilities", "Automate remediation"],
+    "cost_info": "Per assessment run and per instance assessed",
+    "compliance_frameworks": ["PCI DSS", "SOC 2", "ISO 27001"]
+  },
+  {
+    "name": "Amazon Macie",
+    "cloud_provider": "AWS",
+    "category": "Data Loss Prevention",
+    "description": "Data security and data privacy service that uses machine learning to discover and protect sensitive data",
+    "features": ["Data Discovery", "Sensitive Data Classification", "Security Findings", "Data Access Monitoring", "Custom Data Identifiers"],
+    "implementation_guide": "Enable Macie for S3 buckets. Configure data discovery jobs. Set up custom data identifiers for your data types.",
+    "best_practices": ["Regular data discovery scans", "Custom data identifiers", "Monitor data access patterns", "Integrate with Security Hub"],
+    "cost_info": "Usage-based pricing for data processed and classification jobs",
+    "compliance_frameworks": ["GDPR", "HIPAA", "PCI DSS", "SOX"]
+  },
+  {
+    "name": "AWS WAF",
+    "cloud_provider": "AWS",
+    "category": "Web Application Security",
+    "description": "Web application firewall that protects against common web exploits",
+    "features": ["SQL Injection Protection", "XSS Protection", "DDoS Mitigation", "Bot Control", "Rate Limiting", "Geo Blocking"],
+    "implementation_guide": "Create web ACLs with appropriate rules. Deploy to CloudFront, ALB, or API Gateway. Monitor blocked requests.",
+    "best_practices": ["Use managed rule groups", "Monitor and tune rules", "Enable logging", "Regular rule updates"],
+    "cost_info": "$1.00 per web ACL per month plus $0.60 per million requests",
+    "compliance_frameworks": ["PCI DSS", "OWASP Top 10"]
+  },
+  {
+    "name": "Azure Active Directory",
+    "cloud_provider": "Azure",
+    "category": "Identity & Access Management",
+    "description": "Cloud-based identity and access management service",
+    "features": ["Single Sign-On", "Multi-factor Authentication", "Conditional Access", "Identity Protection", "Privileged Identity Management", "Application Management"],
+    "implementation_guide": "Configure conditional access policies. Enable identity protection features. Set up PIM for administrative roles.",
+    "best_practices": ["Use Conditional Access", "Enable PIM", "Regular access reviews", "Monitor sign-in logs", "Implement passwordless authentication"],
+    "cost_info": "Free tier available, Premium P1/P2 licenses for advanced features",
+    "compliance_frameworks": ["SOC 2", "ISO 27001", "HIPAA", "FedRAMP"]
+  },
+  {
+    "name": "Azure Security Center",
+    "cloud_provider": "Azure",
+    "category": "Cloud Security Posture Management",
+    "description": "Unified security management system that strengthens security posture of data centers",
+    "features": ["Security Assessments", "Threat Protection", "Compliance Dashboard", "Regulatory Compliance", "Just-in-Time Access", "Adaptive Application Controls"],
+    "implementation_guide": "Enable Security Center for all subscriptions. Configure security policies. Enable advanced threat protection.",
+    "best_practices": ["Enable auto-provisioning", "Configure email notifications", "Regular compliance reviews", "Use JIT access", "Monitor security score"],
+    "cost_info": "Free tier available, Standard tier for advanced features",
+    "compliance_frameworks": ["Azure Security Benchmark", "NIST", "ISO 27001", "PCI DSS"]
+  },
+  {
+    "name": "Azure Sentinel",
+    "cloud_provider": "Azure",
+    "category": "SIEM & SOAR",
+    "description": "Cloud-native security information and event management (SIEM) and security orchestration, automation, and response (SOAR) solution",
+    "features": ["Data Collection", "Threat Detection", "Investigation", "Response Automation", "Machine Learning Analytics", "Threat Intelligence"],
+    "implementation_guide": "Connect data sources. Configure analytics rules. Set up playbooks for automated response.",
+    "best_practices": ["Connect all relevant data sources", "Create custom analytics rules", "Use threat intelligence", "Automate response actions"],
+    "cost_info": "Pay-as-you-go based on data ingestion volume",
+    "compliance_frameworks": ["SOC 2", "ISO 27001", "NIST CSF"]
+  },
+  {
+    "name": "Azure Key Vault",
+    "cloud_provider": "Azure",
+    "category": "Key Management",
+    "description": "Centralized cloud service for storing and accessing secrets, keys, and certificates",
+    "features": ["Key Management", "Secret Management", "Certificate Management", "Hardware Security Module", "Access Policies", "Audit Logging"],
+    "implementation_guide": "Create key vault with appropriate access policies. Store secrets and certificates. Enable soft delete and purge protection.",
+    "best_practices": ["Use managed identities", "Enable soft delete", "Regular key rotation", "Monitor access logs", "Use HSM for sensitive keys"],
+    "cost_info": "Per operation pricing with HSM premium tier available",
+    "compliance_frameworks": ["FIPS 140-2", "Common Criteria", "SOC 2"]
+  },
+  {
+    "name": "Azure Defender",
+    "cloud_provider": "Azure",
+    "category": "Threat Protection",
+    "description": "Advanced threat protection for workloads running in Azure, on-premises, and other clouds",
+    "features": ["Server Protection", "SQL Protection", "Storage Protection", "Kubernetes Protection", "Container Registry Protection", "Key Vault Protection"],
+    "implementation_guide": "Enable Defender for specific resource types. Configure email notifications. Set up integration with SIEM.",
+    "best_practices": ["Enable for all resource types", "Configure custom alerts", "Regular review of recommendations", "Automate response actions"],
+    "cost_info": "Per resource per month pricing varies by service",
+    "compliance_frameworks": ["Azure Security Benchmark", "NIST", "CIS Controls"]
+  },
+  {
+    "name": "Google Cloud Identity and Access Management",
+    "cloud_provider": "GCP",
+    "category": "Identity & Access Management",
+    "description": "Control who has access to what resources in Google Cloud",
+    "features": ["IAM Policies", "Service Accounts", "IAM Conditions", "Policy Intelligence", "Resource Hierarchy", "Audit Logs"],
+    "implementation_guide": "Apply principle of least privilege. Use predefined roles when possible. Implement IAM conditions for fine-grained access.",
+    "best_practices": ["Use IAM Conditions", "Regular policy reviews", "Enable audit logging", "Use service accounts for applications", "Implement resource hierarchy"],
+    "cost_info": "No additional cost for IAM features",
+    "compliance_frameworks": ["SOC 2", "ISO 27001", "FedRAMP", "HIPAA"]
+  },
+  {
+    "name": "Google Cloud Security Command Center",
+    "cloud_provider": "GCP",
+    "category": "Cloud Security Posture Management",
+    "description": "Centralized security and risk management platform for Google Cloud",
+    "features": ["Asset Discovery", "Vulnerability Assessment", "Threat Detection", "Compliance Monitoring", "Security Analytics", "Event Threat Detection"],
+    "implementation_guide": "Enable SCC for all projects. Configure notification channels. Set up custom security marks and findings.",
+    "best_practices": ["Regular asset inventory", "Automated finding remediation", "Continuous monitoring", "Custom security marks", "Integration with SIEM"],
+    "cost_info": "Standard tier free, Premium tier for advanced features",
+    "compliance_frameworks": ["CIS Controls", "NIST CSF", "ISO 27001", "PCI DSS"]
+  },
+  {
+    "name": "Google Cloud Armor",
+    "cloud_provider": "GCP",
+    "category": "Web Application Security",
+    "description": "Web application firewall and DDoS protection service",
+    "features": ["DDoS Protection", "WAF Rules", "Rate Limiting", "Geo-based Access Control", "Custom Rules", "Bot Management"],
+    "implementation_guide": "Create security policies with appropriate rules. Attach to load balancers. Monitor security events.",
+    "best_practices": ["Use adaptive protection", "Monitor security events", "Regular rule updates", "Rate limiting configuration"],
+    "cost_info": "Based on policies and requests processed",
+    "compliance_frameworks": ["PCI DSS", "OWASP Top 10"]
+  },
+  {
+    "name": "Google Cloud Key Management Service",
+    "cloud_provider": "GCP",
+    "category": "Key Management",
+    "description": "Centralized cloud service to manage encryption keys",
+    "features": ["Key Management", "Hardware Security Module", "Key Rotation", "Import/Export", "Audit Logging", "External Key Manager"],
+    "implementation_guide": "Create key rings and keys. Configure automatic rotation. Use with Google Cloud services for encryption.",
+    "best_practices": ["Use automatic key rotation", "Separate key rings by environment", "Monitor key usage", "Use HSM for sensitive data"],
+    "cost_info": "Per key version per month plus operation charges",
+    "compliance_frameworks": ["FIPS 140-2", "Common Criteria", "SOC 2"]
+  },
+  {
+    "name": "Google Cloud Binary Authorization",
+    "cloud_provider": "GCP",
+    "category": "Container Security",
+    "description": "Deploy-time security control that ensures only trusted container images are deployed",
+    "features": ["Attestation-based Deployment", "Policy Management", "Vulnerability Scanning Integration", "CI/CD Integration", "Audit Logging"],
+    "implementation_guide": "Create binary authorization policy. Set up attestors. Configure CI/CD pipeline integration.",
+    "best_practices": ["Require attestations from CI/CD", "Use vulnerability scanning", "Regular policy reviews", "Monitor policy violations"],
+    "cost_info": "No additional charges for the service",
+    "compliance_frameworks": ["CIS Controls", "NIST Supply Chain Security"]
+  },
+  {
+    "name": "Google Cloud Confidential Computing",
+    "cloud_provider": "GCP",
+    "category": "Data Protection",
+    "description": "Encrypt data in use while it's being processed",
+    "features": ["Confidential VMs", "Confidential GKE Nodes", "Memory Encryption", "Attestation", "Secure Enclaves"],
+    "implementation_guide": "Create confidential VM instances. Enable confidential computing for GKE nodes. Verify attestation reports.",
+    "best_practices": ["Use for sensitive workloads", "Verify attestation", "Monitor performance impact", "Combine with other security controls"],
+    "cost_info": "Additional charges for confidential VM instances",
+    "compliance_frameworks": ["HIPAA", "GDPR", "Confidential Computing Consortium"]
+  },
+  {
+    "name": "AWS Shield",
+    "cloud_provider": "AWS",
+    "category": "DDoS Protection",
+    "description": "Managed DDoS protection service for applications running on AWS",
+    "features": ["Always-On Detection", "Automatic Mitigation", "Advanced Attack Diagnostics", "DDoS Response Team", "Cost Protection"],
+    "implementation_guide": "Shield Standard is automatically enabled. Upgrade to Shield Advanced for enhanced protection and DRT support.",
+    "best_practices": ["Use with CloudFront and Route 53", "Configure health checks", "Enable cost protection", "Regular DRT engagement"],
+    "cost_info": "Shield Standard free, Shield Advanced $3,000 per month plus data transfer charges",
+    "compliance_frameworks": ["SOC 2", "ISO 27001"]
+  },
+  {
+    "name": "Azure DDoS Protection",
+    "cloud_provider": "Azure",
+    "category": "DDoS Protection",
+    "description": "DDoS protection service for applications and virtual networks",
+    "features": ["Always-On Monitoring", "Automatic Mitigation", "Attack Analytics", "DDoS Rapid Response", "Cost Protection"],
+    "implementation_guide": "Enable DDoS Protection Standard on virtual networks. Configure DDoS protection plans.",
+    "best_practices": ["Enable on all public-facing resources", "Monitor attack metrics", "Configure alerts", "Use with Application Gateway"],
+    "cost_info": "Basic protection free, Standard protection per protected resource",
+    "compliance_frameworks": ["SOC 2", "ISO 27001"]
+  }
+]
