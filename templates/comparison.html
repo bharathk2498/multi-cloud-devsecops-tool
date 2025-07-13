@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}Cloud Platform Security Comparison{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-balance-scale fa-3x text-primary me-3"></i>
+                <div>
+                    <h1 class="mb-1">Cloud Platform Security Comparison</h1>
+                    <p class="text-muted mb-0">Side-by-side comparison of security services across AWS, Azure, and Google Cloud</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Overview Cards -->
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h5 class="mb-0">
+                        <i class="fab fa-aws fa-2x me-2"></i>
+                        Amazon Web Services
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ aws_services|length }} security services available</p>
+                    <h6>Key Strengths:</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Mature security ecosystem</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Extensive compliance certifications</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced threat detection</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Comprehensive audit capabilities</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('aws_security') }}" class="btn btn-warning">View AWS Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white text-center">
+                    <h5 class="mb-0">
+                        <i class="fab fa-microsoft fa-2x me-2"></i>
+                        Microsoft Azure
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ azure_services|length }} security services available</p>
+                    <h6>Key Strengths:</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Enterprise identity integration</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Hybrid cloud security</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced SIEM capabilities</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Zero Trust architecture</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('azure_security') }}" class="btn btn-info">View Azure Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-success">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0">
+                        <i class="fab fa-google fa-2x me-2"></i>
+                        Google Cloud Platform
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ gcp_services|length }} security services available</p>
+                    <h6>Key Strengths:</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Built-in security by design</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced AI/ML security</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Container-first security</li>
+                        <li><i class="fas fa-check text-success me-2"></i>BeyondCorp Zero Trust</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('gcp_security') }}" class="btn btn-success">View GCP Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Category Comparison -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-table me-2"></i>Security Service Category Comparison
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-warning">AWS</th>
+                                    <th class="text-info">Azure</th>
+                                    <th class="text-success">GCP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Identity & Access Management</strong></td>
+                                    <td>IAM, Organizations, SSO</td>
+                                    <td>Azure AD, PIM, Conditional Access</td>
+                                    <td>Cloud IAM, Cloud Identity, Context-aware Access</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Threat Detection</strong></td>
+                                    <td>GuardDuty, Detective, Macie</td>
+                                    <td>Azure Sentinel, Defender</td>
+                                    <td>Security Command Center, Chronicle</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Security Monitoring</strong></td>
+                                    <td>Security Hub, CloudTrail, Config</td>
+                                    <td>Security Center, Monitor, Activity Log</td>
+                                    <td>Security Command Center, Cloud Logging</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Network Security</strong></td>
+                                    <td>WAF, Shield, VPC Security Groups</td>
+                                    <td>WAF, DDoS Protection, NSG</td>
+                                    <td>Cloud Armor, VPC Firewall</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Data Protection</strong></td>
+                                    <td>KMS, CloudHSM, Certificate Manager</td>
+                                    <td>Key Vault, Information Protection</td>
+                                    <td>Cloud KMS, Cloud HSM, Certificate Authority</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Compliance</strong></td>
+                                    <td>Artifact, Audit Manager</td>
+                                    <td>Compliance Manager, Blueprints</td>
+                                    <td>Compliance Reports, Assured Workloads</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Feature Comparison -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-microscope me-2"></i>Detailed Feature Comparison
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-warning">
+                                <i class="fab fa-aws me-2"></i>AWS Unique Features
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-star text-warning me-2"></i>GuardDuty ML-based threat detection</li>
+                                <li><i class="fas fa-star text-warning me-2"></i>Detective investigation graphs</li>
+                                <li><i class="fas fa-star text-warning me-2"></i>Macie data classification</li>
+                                <li><i class="fas fa-star text-warning me-2"></i>Inspector application security</li>
+                                <li><i class="fas fa-star text-warning me-2"></i>Security Lake centralized logs</li>
+                                <li><i class="fas fa-star text-warning me-2"></i>Verified Access Zero Trust</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-info">
+                                <i class="fab fa-microsoft me-2"></i>Azure Unique Features
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-star text-info me-2"></i>Azure Sentinel cloud-native SIEM</li>
+                                <li><i class="fas fa-star text-info me-2"></i>Defender for Cloud comprehensive CWPP</li>
+                                <li><i class="fas fa-star text-info me-2"></i>Conditional Access policies</li>
+                                <li><i class="fas fa-star text-info me-2"></i>Privileged Identity Management</li>
+                                <li><i class="fas fa-star text-info me-2"></i>Information Protection DLP</li>
+                                <li><i class="fas fa-star text-info me-2"></i>Confidential Computing</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-success">
+                                <i class="fab fa-google me-2"></i>GCP Unique Features
+                            </h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-star text-success me-2"></i>BeyondCorp Enterprise Zero Trust</li>
+                                <li><i class="fas fa-star text-success me-2"></i>Binary Authorization for containers</li>
+                                <li><i class="fas fa-star text-success me-2"></i>Chronicle security analytics</li>
+                                <li><i class="fas fa-star text-success me-2"></i>Confidential GKE workloads</li>
+                                <li><i class="fas fa-star text-success me-2"></i>Policy Intelligence recommendations</li>
+                                <li><i class="fas fa-star text-success me-2"></i>Shielded VMs integrity monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing and Licensing Comparison -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-dollar-sign me-2"></i>Pricing Model Comparison
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Service Type</th>
+                                    <th class="text-warning">AWS</th>
+                                    <th class="text-info">Azure</th>
+                                    <th class="text-success">GCP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Identity Management</strong></td>
+                                    <td>Free (IAM)</td>
+                                    <td>Free tier + Premium licenses</td>
+                                    <td>Free (Cloud IAM)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Threat Detection</strong></td>
+                                    <td>Usage-based (events/month)</td>
+                                    <td>Per resource/month</td>
+                                    <td>Free tier + premium features</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Security Monitoring</strong></td>
+                                    <td>Free + usage-based</td>
+                                    <td>Free tier + standard pricing</td>
+                                    <td>Free tier + premium features</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Key Management</strong></td>
+                                    <td>Per key + API calls</td>
+                                    <td>Per operation + HSM</td>
+                                    <td>Per key version + operations</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Compliance Tools</strong></td>
+                                    <td>Usage-based</td>
+                                    <td>Included in subscriptions</td>
+                                    <td>Free + premium add-ons</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multi-Cloud Strategy Considerations -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cloud me-2"></i>Multi-Cloud Security Strategy Considerations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Best Practices</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Centralized identity federation across platforms</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Unified security monitoring and SIEM</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Consistent policy enforcement mechanisms</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Cross-platform compliance monitoring</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Standardized incident response procedures</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Key Challenges</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>Tool proliferation and complexity</li>
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>Inconsistent security models</li>
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>Visibility gaps across platforms</li>
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>Compliance verification overhead</li>
+                                <li><i class="fas fa-exclamation-triangle text-warning me-2"></i>Skills gap for multiple platforms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
