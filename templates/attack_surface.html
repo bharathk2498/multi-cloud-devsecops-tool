@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Attack Surface Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-crosshairs fa-3x text-danger me-3"></i>
+                <div>
+                    <h1 class="mb-1">Attack Surface Management</h1>
+                    <p class="text-muted mb-0">Advanced ASM methodology with multi-cloud integration and comprehensive vulnerability assessment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASM Methodology -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>ASM Methodology Framework
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-search fa-3x text-primary mb-2"></i>
+                                <h6>1. Discovery</h6>
+                                <p class="text-muted small">Asset identification across cloud platforms</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-sitemap fa-3x text-info mb-2"></i>
+                                <h6>2. Inventory</h6>
+                                <p class="text-muted small">Comprehensive asset cataloging</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-shield-virus fa-3x text-warning mb-2"></i>
+                                <h6>3. Assessment</h6>
+                                <p class="text-muted small">Vulnerability and risk analysis</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="text-center">
+                                <i class="fas fa-tools fa-3x text-success mb-2"></i>
+                                <h6>4. Remediation</h6>
+                                <p class="text-muted small">Risk mitigation and monitoring</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multi-Cloud ASM Tools -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-tools me-2"></i>Multi-Cloud ASM Tools
+            </h2>
+        </div>
+        
+        {% for tool in tools %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog text-primary me-2"></i>
+                        {{ tool.name }}
+                    </h5>
+                    <span class="badge bg-secondary">{{ tool.category }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ tool.description }}</p>
+                    
+                    <!-- Cloud Platform Support -->
+                    {% if tool.cloud_platforms %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-cloud me-2"></i>Supported Platforms
+                    </h6>
+                    <div>
+                        {% for platform in tool.cloud_platforms %}
+                        {% if platform == 'AWS' %}
+                        <span class="badge bg-warning me-1">
+                            <i class="fab fa-aws me-1"></i>{{ platform }}
+                        </span>
+                        {% elif platform == 'Azure' %}
+                        <span class="badge bg-info me-1">
+                            <i class="fab fa-microsoft me-1"></i>{{ platform }}
+                        </span>
+                        {% elif platform == 'GCP' %}
+                        <span class="badge bg-success me-1">
+                            <i class="fab fa-google me-1"></i>{{ platform }}
+                        </span>
+                        {% else %}
+                        <span class="badge bg-secondary me-1">{{ platform }}</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Features -->
+                    {% if tool.features %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-list me-2"></i>Key Features
+                    </h6>
+                    <ul class="list-unstyled">
+                        {% for feature in tool.features %}
+                        <li><i class="fas fa-check text-success me-2"></i>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <!-- Integration Guide -->
+                    {% if tool.integration_guide %}
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-plug me-2"></i>Integration Guide
+                        </h6>
+                        <p class="text-muted small">{{ tool.integration_guide }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Cost Model -->
+                    <div class="mt-3">
+                        <h6>
+                            <i class="fas fa-dollar-sign me-2"></i>Cost Model
+                        </h6>
+                        <span class="badge bg-info">{{ tool.cost_model }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ASM Best Practices -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>ASM Best Practices for Multi-Cloud Environments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Discovery & Inventory</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-arrow-right text-primary me-2"></i>Implement continuous asset discovery across all cloud accounts</li>
+                                <li><i class="fas fa-arrow-right text-primary me-2"></i>Maintain centralized asset inventory with metadata</li>
+                                <li><i class="fas fa-arrow-right text-primary me-2"></i>Use cloud-native tools for resource enumeration</li>
+                                <li><i class="fas fa-arrow-right text-primary me-2"></i>Monitor shadow IT and unauthorized resources</li>
+                                <li><i class="fas fa-arrow-right text-primary me-2"></i>Track external-facing services and endpoints</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-danger">Risk Assessment & Monitoring</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-arrow-right text-danger me-2"></i>Prioritize internet-facing assets for assessment</li>
+                                <li><i class="fas fa-arrow-right text-danger me-2"></i>Implement automated vulnerability scanning</li>
+                                <li><i class="fas fa-arrow-right text-danger me-2"></i>Monitor for configuration drift and changes</li>
+                                <li><i class="fas fa-arrow-right text-danger me-2"></i>Establish risk scoring and prioritization</li>
+                                <li><i class="fas fa-arrow-right text-danger me-2"></i>Integrate with threat intelligence feeds</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloud-Specific ASM Considerations -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-cloud-sun me-2"></i>Cloud-Specific ASM Considerations
+            </h2>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0">
+                        <i class="fab fa-aws me-2"></i>AWS ASM Focus Areas
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-globe text-warning me-2"></i>Public S3 buckets and CloudFront distributions</li>
+                        <li><i class="fas fa-server text-warning me-2"></i>EC2 instances with public IPs</li>
+                        <li><i class="fas fa-database text-warning me-2"></i>RDS instances with public access</li>
+                        <li><i class="fas fa-balance-scale text-warning me-2"></i>Load balancers and API Gateways</li>
+                        <li><i class="fas fa-cloud text-warning me-2"></i>Elastic IPs and NAT Gateways</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fab fa-microsoft me-2"></i>Azure ASM Focus Areas
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-globe text-info me-2"></i>Public storage accounts and CDN endpoints</li>
+                        <li><i class="fas fa-server text-info me-2"></i>Virtual machines with public IPs</li>
+                        <li><i class="fas fa-database text-info me-2"></i>SQL databases with public endpoints</li>
+                        <li><i class="fas fa-balance-scale text-info me-2"></i>Application Gateways and Load Balancers</li>
+                        <li><i class="fas fa-globe-americas text-info me-2"></i>App Services and Function Apps</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-success">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0">
+                        <i class="fab fa-google me-2"></i>GCP ASM Focus Areas
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-globe text-success me-2"></i>Public Cloud Storage buckets and CDN</li>
+                        <li><i class="fas fa-server text-success me-2"></i>Compute Engine instances with external IPs</li>
+                        <li><i class="fas fa-database text-success me-2"></i>Cloud SQL with public access</li>
+                        <li><i class="fas fa-balance-scale text-success me-2"></i>Load Balancers and API Gateway</li>
+                        <li><i class="fas fa-container text-success me-2"></i>GKE clusters and App Engine services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
