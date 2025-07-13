@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}MITRE ATT&CK Framework{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-crosshairs fa-3x text-danger me-3"></i>
+                <div>
+                    <h1 class="mb-1">MITRE ATT&CK Framework</h1>
+                    <p class="text-muted mb-0">Cloud-specific tactics and techniques with multi-platform mitigations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MITRE ATT&CK Overview -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <h5 class="alert-heading">
+                    <i class="fas fa-info-circle me-2"></i>About MITRE ATT&CK for Cloud
+                </h5>
+                <p class="mb-0">
+                    The MITRE ATT&CK framework provides a comprehensive matrix of tactics and techniques used by adversaries. 
+                    This reference focuses on cloud-specific attack vectors and provides corresponding defensive measures 
+                    across AWS, Azure, and Google Cloud platforms.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tactics Grid -->
+    <div class="row">
+        {% for tactic in tactics %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bullseye text-danger me-2"></i>
+                        {{ tactic.name }}
+                    </h5>
+                    <span class="badge bg-danger">{{ tactic.tactic_id }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ tactic.description }}</p>
+                    
+                    <!-- Techniques -->
+                    {% if tactic.techniques %}
+                    <h6 class="mt-3">
+                        <i class="fas fa-tools me-2"></i>Associated Techniques
+                    </h6>
+                    <div class="mb-3">
+                        {% for technique in tactic.techniques %}
+                        <span class="badge bg-secondary me-1 mb-1">{{ technique }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Cloud Platform Mitigations -->
+                    <div class="row mt-3">
+                        {% if tactic.aws_mitigations %}
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-warning">
+                                <i class="fab fa-aws me-1"></i>AWS Mitigations
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for mitigation in tactic.aws_mitigations %}
+                                <li class="mb-1">
+                                    <i class="fas fa-shield text-warning me-2"></i>
+                                    <small>{{ mitigation }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        {% if tactic.azure_mitigations %}
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-info">
+                                <i class="fab fa-microsoft me-1"></i>Azure Mitigations
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for mitigation in tactic.azure_mitigations %}
+                                <li class="mb-1">
+                                    <i class="fas fa-shield text-info me-2"></i>
+                                    <small>{{ mitigation }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        {% if tactic.gcp_mitigations %}
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-success">
+                                <i class="fab fa-google me-1"></i>GCP Mitigations
+                            </h6>
+                            <ul class="list-unstyled">
+                                {% for mitigation in tactic.gcp_mitigations %}
+                                <li class="mb-1">
+                                    <i class="fas fa-shield text-success me-2"></i>
+                                    <small>{{ mitigation }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-outline-danger" onclick="exportTacticDetails('{{ tactic.name }}', '{{ tactic.tactic_id }}')">
+                        <i class="fas fa-download me-1"></i>Export Playbook
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Cloud Attack Vectors -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cloud-rain me-2"></i>Common Cloud Attack Vectors
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-danger">Initial Access</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-key text-danger me-2"></i>Compromised credentials</li>
+                                <li><i class="fas fa-globe text-danger me-2"></i>Publicly exposed services</li>
+                                <li><i class="fas fa-bug text-danger me-2"></i>Application vulnerabilities</li>
+                                <li><i class="fas fa-user-secret text-danger me-2"></i>Social engineering</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-warning">Persistence</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-user-plus text-warning me-2"></i>Account creation</li>
+                                <li><i class="fas fa-key text-warning me-2"></i>Credential access</li>
+                                <li><i class="fas fa-server text-warning me-2"></i>Backdoor services</li>
+                                <li><i class="fas fa-code text-warning me-2"></i>Malicious automation</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-info">Defense Evasion</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-eye-slash text-info me-2"></i>Logging disruption</li>
+                                <li><i class="fas fa-mask text-info me-2"></i>Traffic obfuscation</li>
+                                <li><i class="fas fa-user-ninja text-info me-2"></i>Privilege abuse</li>
+                                <li><i class="fas fa-clock text-info me-2"></i>Time-based attacks</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detection and Response Matrix -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search me-2"></i>Multi-Cloud Detection and Response Matrix
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Tactic</th>
+                                    <th class="text-warning">AWS Detection</th>
+                                    <th class="text-info">Azure Detection</th>
+                                    <th class="text-success">GCP Detection</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Initial Access</strong></td>
+                                    <td>GuardDuty, VPC Flow Logs</td>
+                                    <td>Azure Sentinel, NSG Flow Logs</td>
+                                    <td>Security Command Center, VPC Flow Logs</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Execution</strong></td>
+                                    <td>CloudTrail, Lambda Monitoring</td>
+                                    <td>Activity Logs, Function Monitoring</td>
+                                    <td>Cloud Audit Logs, Function Monitoring</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Persistence</strong></td>
+                                    <td>Config, IAM Access Analyzer</td>
+                                    <td>Security Center, Azure AD Logs</td>
+                                    <td>Cloud Asset Inventory, IAM Recommender</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Credential Access</strong></td>
+                                    <td>CloudTrail, GuardDuty</td>
+                                    <td>Azure AD Identity Protection</td>
+                                    <td>Security Command Center, Cloud Audit Logs</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function exportTacticDetails(tacticName, tacticId) {
+    alert(`Exporting MITRE ATT&CK playbook for: ${tacticName} (${tacticId})\n\nThis would generate a comprehensive incident response playbook including:\n\n• Detection queries for all cloud platforms\n• Response procedures\n• Forensic collection steps\n• Mitigation strategies\n• Recovery recommendations`);
+}
+</script>
+{% endblock %}
